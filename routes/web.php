@@ -17,20 +17,13 @@ Route::get('/', function () {
 
 Route::get('student-meeting', 'StudentMeetingController@index');
 Route::get('teacher-meeting', 'TeacherMeetingController@index');
+
 Route::resource('rest','RestMeetingController');
-Auth::routes([
-    'register' => false
-]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Auth::routes([
+//     'register' => false
+// ]);
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
