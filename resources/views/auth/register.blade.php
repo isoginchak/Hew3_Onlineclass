@@ -55,12 +55,16 @@
 
                             </div>
                         </div>
-
-                        <!-- <div class="form-group row">
-                            <label for="school-name" class="col-md-4 col-form-label text-md-right">{{ __('学校名') }}</label>
+                        <div class="form-group row">
+                            <label for="school-id" class="col-md-4 col-form-label text-md-right">{{ __('学校名') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('school-name') is-invalid @enderror" name="school-name" value="{{ old('school-name') }}" required autocomplete="organization" autofocus>
+                                <select type="selsect" name="school-id" id="school-id">
+                                <option value="" selected>学校を選択してください</option>
+                                @foreach ($items as $item)
+                                <option value="{{ $item->school_id }}" >{{ $item->school_name }}</option>
+                                @endforeach
+                                </select>
 
                                 @error('school-name')
                                 <span class="invalid-feedback" role="alert">
@@ -69,7 +73,9 @@
                                 @enderror
 
                             </div>
-                        </div> -->
+                        </div>
+
+
                         <div class="form-group row">
                             <label for="position" class="col-md-4 col-form-label text-md-right">{{ __('職業') }}</label>
 

@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -53,7 +54,7 @@ class RegisterController extends Controller
             'family-name' => ['required', 'string', 'max:255'],
             'first-name' => ['required', 'string', 'max:255'],           
             'mailaddress' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            // 'school-name' => ['required', 'string', 'max:255'],
+            'school-id' => ['required'],
             'position' => ['required'],
             'password' => ['required', 'string', 'min:4', 'confirmed'],
         ]);
@@ -69,6 +70,7 @@ class RegisterController extends Controller
     {
         return User::create([
             //カラム名=>フォームのname
+            'schoolid' => $data['school-id'],
             'family_name' => $data['family-name'],
             'first_name' => $data['first-name'],
             'mailaddress' => $data['mailaddress'],
@@ -76,4 +78,15 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password'])
         ]);
     }
+
+    public function showRegistrationForm()
+    {
+
+       $items=DB::select('select * from schools');
+       return view('auth.register', ['items'=>$items]);
+   }
+
+
+
+    
 }

@@ -8,9 +8,6 @@ class StudentMeetingController extends Controller
 {
     public function index(Request $request)
     {
-
-
-    return view('meeting.student-meetingroom');
-
+        return view('meeting.student-meetingroom');
     }
 }

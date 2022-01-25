@@ -14,17 +14,15 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
+Auth::routes();
 Route::get('student-meeting', 'StudentMeetingController@index');
 Route::get('teacher-meeting', 'TeacherMeetingController@index');
+Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 
 Route::resource('rest','RestMeetingController');
 
 // Auth::routes([
-//     'register' => false
+//  
 // ]);
-
-
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
