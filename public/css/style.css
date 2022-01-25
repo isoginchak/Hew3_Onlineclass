@@ -1,0 +1,330 @@
+@charset "UTF-8";
+
+body {
+    font-family: Hiragino sans, Hiragino Kaku Gothic ProN, "ヒラギノ角ゴ ProN W3", Meiryo, "メイリオ", Osaka, MS PGothic, "ＭＳ Ｐゴシック", Helvetica, Arial, sans-serif;
+}
+
+.messages {
+    font-family: Hiragino sans, Hiragino Kaku Gothic ProN, "ヒラギノ角ゴ ProN W3", Meiryo, "メイリオ", Osaka, MS PGothic, "ＭＳ Ｐゴシック", Helvetica, Arial, sans-serif;
+    color: #49555e;
+}
+
+
+
+.container {
+    width: 100vw;
+    position: relative;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    /* IE, Edge 対応 */
+    scrollbar-width: none;
+    /* Firefox 対応 */
+}
+
+.container::-webkit-scrollbar {
+    /* Chrome, Safari 対応 */
+    display: none;
+}
+
+.pointer:hover {
+    cursor: pointer;
+}
+
+.material-icons.icon-size, .material-icons-outlined.icon-size {
+    font-size: 30px;
+    color: #0078c8;
+
+}
+
+.material-icons.icon-small-size {
+    font-size: 34px;
+    color: #0078c8;
+    padding-top: 6px;
+    padding-left: 10px;
+}
+
+#js-local-stream {
+    margin: 0 auto;
+    width: 80vw;
+    height: 91.5vh;
+    background-color: #333;
+
+}
+
+#video-error{
+    display: none;
+    font-size: 22px;
+    color: #c85000;
+    vertical-align: 80%;
+
+}
+
+.set-up-bar {
+    width: 100%;
+    height: 8vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #fff;
+    box-shadow: 0 8px 17px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
+}
+
+.remote-streams {
+    height: 60vh;
+    position: absolute;
+    top: 0px;
+}
+
+.remote-streams video {
+    height: 20%;
+
+}
+
+.room {
+    display: flex;
+}
+
+.message-box {
+    position: relative;
+    width: 20vw;
+
+}
+
+.msg-form {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    /* justify-content: space-around; */
+    top: 91.5vh;
+    margin-top: .5vh;
+    height: 8vh;
+    width: 20vw;
+    padding: 0 0px 0 10px;
+    margin-bottom: 1vh;
+
+
+}
+
+.messages {
+    padding: 0 10px 0 20px;
+    width: 18vw;
+    word-break: break-all;
+}
+
+#text {
+    width: 15vw;
+    word-break: break-all;
+}
+
+#js-local-text {
+    width: 16vw;
+    height: 5vh;
+    border-radius: 20px;
+    border: #fff;
+    box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+
+}
+
+#js-local-text:focus {
+    outline: 2px solid #79c3ff;
+
+}
+
+#seconds {
+    width: 60px;
+    white-space: nowrap;
+    color: #49555e;
+    text-align: right;
+}
+
+.face {
+    display: flex;
+    align-items: center;
+
+}
+
+#face {
+    padding-right: 15px;
+}
+
+.alert {
+    position: absolute;
+    width: 500px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #77cfdb;
+    color: #fff;
+    border-radius: 8px;
+
+}
+
+.alert p {
+    text-align: center;
+    line-height: 150px;
+    font-size: 30px;
+
+}
+
+.leave-seat {
+    margin-left: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.leave-seat p {
+    margin-right: 10px;
+    font-size: 16px;
+    color: #0078c8;
+    font-weight:bold
+    
+}
+
+.switch-label {
+    width: 60px;
+    position: relative;
+    display: inline-block;
+}
+
+.switch-content {
+    display: block;
+    cursor: pointer;
+    position: relative;
+    border-radius: 30px;
+    height: 31px;
+    overflow: hidden;
+}
+
+.switch-content:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: calc(100% - 3px);
+    height: calc(100% - 3px);
+    top: 0;
+    left: 0;
+    border: 1.5px solid #E5E5EA;
+    box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+    border-radius: 30px;
+    background-color: #fff;
+}
+
+.switch-content:after {
+    content: "";
+    display: block;
+    position: absolute;
+    background-color: transparent;
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 50%;
+    border-radius: 30px;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+}
+
+.switch-input {
+    display: none;
+}
+
+.switch-circle {
+    display: block;
+    top: 2px;
+    left: 2px;
+    position: absolute;
+    -webkit-box-shadow: 0 2px 6px #999;
+    box-shadow: 0 2px 6px #999;
+    width: 27px;
+    height: 27px;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+    background-color: #fff;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+}
+
+.switch-input:checked~.switch-circle {
+    left: 31px;
+}
+
+.switch-input:checked~.switch-content:after {
+    background-color: #0078c8;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.message-box {
+    padding-top: 10px;
+    height: 92vh;
+    overflow-y: auto;
+
+}
+
+.sender-box {
+    font-size: 14px;
+    padding: 0 3px;
+
+}
+
+.sender-message-box {
+    display: inline-flex;
+    flex-wrap: wrap;
+    width: 18vw;
+    height: auto;
+    font-size: 16px;
+    border: solid 2px #5CA0E8;
+    /*線*/
+    border-radius: 10px;
+    /*角の丸み*/
+    padding: 5px 3px;
+    margin: 0;
+    margin-bottom: 10px;
+    overflow-wrap: break-all;
+}
+
+.my-message-box {
+    display: inline-flex;
+    flex-wrap: wrap;
+    width: 18vw;
+    height: auto;
+    font-size: 16px;
+    border: solid 2px #77CFDB;
+    /*線*/
+    border-radius: 10px;
+    /*角の丸み*/
+    padding: 5px 3px;
+    margin: 0;
+    overflow-wrap: break-all;
+}
+
+.message-time{
+    width: 18vw;
+    font-size: 12px;
+    text-align: right;
+    margin-bottom: 5px;
+}
+
+
+::-webkit-scrollbar {
+    width: 7px;
+    background: #fafafa;
+  }
+
+::-webkit-scrollbar-thumb {
+  background: #79C3FF;
+}
+
+.space{
+    padding-bottom: 10px;
+}

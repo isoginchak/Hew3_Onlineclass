@@ -1,0 +1,26 @@
+@charset "UTF-8";
+.wrapper {
+    width: 960px;
+    margin: 0 auto;
+}
+
+#step2 {
+    visibility: hidden;
+}
+
+table{
+    width: 500px;
+    border-collapse: collapse;
+
+}
+table th, table td ,tr{
+    border: solid 1px black;
+    /*実線 1px 黒*/
+  }
+
+
+
+
+/* th {
+    margin: 30px;
+} */
