@@ -24,5 +24,5 @@ Route::resource('rest','RestMeetingController');
 // Auth::routes([
 //  
 // ]);
-
+Route::get('/mypage', 'MypageController@index');
 Route::get('/home', 'HomeController@index')->name('home');

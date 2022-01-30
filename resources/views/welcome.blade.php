@@ -9,14 +9,10 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons%7CMaterial+Icons+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>OnlineClass/トップページ</title>
-
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
 
-    <!-- Styles -->
-    <style>
-
-    </style>
 </head>
 
 <body>
@@ -24,7 +20,7 @@
         <div class="menubar">
             <div class="logo-wrap">
                 <a href="#">
-                    <img src="/img/logo.png" alt="ロゴ" class="logo">
+                    <img src="/img/logo.svg" alt="ロゴ" class="logo">
                 </a>
             </div>
             <div class="menu-wrap">
@@ -42,27 +38,31 @@
         </div>
     </div>
     <div class="top-img">
-        <div class="caption-wrap">
+        <div class="caption-wrap" >
             <p>学校のオンライン授業を<br>より受けやすく。</p>
         </div>
     </div>
     <div class="wrapper">
         <section>
-            <h2>About</h2>
-            <h1>OnlineClassとは</h1>
-            <hr class="sec-hr">
-            <p class="des">OnlineClassは今までオンライン授業を体験して、教師からの視点
-                <br>生徒からの視点での<strong>不満や使いづらさ</strong>を解消したの授業用のミーテイングアプリです。
-            </p>
-            <img src="/img/topimg2.jpg" alt="PC" class="img2">
+            <div data-aos="fade-up">
+                <h2>About</h2>
+                <h1>OnlineClassとは</h1>
+                <hr class="sec-hr">
+                <p class="des">OnlineClassは今までオンライン授業を体験して、教師からの視点
+                    <br>生徒からの視点での<strong>不満や使いづらさ</strong>を解消したの授業用のミーテイングアプリです。
+                </p>
+            </div>
+            <img src="/img/topimg2.jpg" alt="PC" class="img2" data-aos="fade-up">
         </section>
 
         <section>
-            <h2>Features</h2>
-            <h1>機能</h1>
-            <hr class="sec-hr">
-            <p class="des">従来のミーティングアプリにオンライン授業で役立つ機能を追加しました。</p>
-            <div class="card-wrap">
+            <div data-aos="fade-up">
+                <h2>Features</h2>
+                <h1>機能</h1>
+                <hr class="sec-hr">
+                <p class="des">従来のミーティングアプリにオンライン授業で役立つ機能を追加しました。</p>
+            </div>
+            <div class="card-wrap" data-aos="fade-up">
                 <div class="card">
                     <h3>01</h3>
                     <i class="material-icons-outlined">face</i>
@@ -90,18 +90,19 @@
                         面倒なIDやパスワードの入力をなくし<br>ワンクリックで入室できるように<br>なりました。
                     </p>
                 </div>
-
             </div>
         </section>
         <section>
-            <h2>How to</h2>
-            <h1>ご利用方法</h1>
-            <hr class="sec-hr">
-            <p class="des">
-                仮で発行した教師用メールアドレス・生徒用メールアドレスでログインすると試す事ができます。<br>
+            <div data-aos="fade-up">
+                <h2>How to</h2>
+                <h1>ご利用方法</h1>
+                <hr class="sec-hr">
+                <p class="des">
+                    仮で発行した教師用メールアドレス・生徒用メールアドレスでログインすると試す事ができます。<br>
 
-            </p>
-            <div class="howto-wrap">
+                </p>
+            </div>
+            <div class="howto-wrap" data-aos="fade-up">
                 <div class="teacher-wrap howto-box">
                     <div class="img-box">
                         <img src="/img/teacher2.png" alt="" class="howtoimg">
@@ -187,7 +188,10 @@
 
 
 
+
     </div>
+    <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
+    <script  src="{{ asset('js/fadein.js') }}"></script>
 </body>
 
 </html>

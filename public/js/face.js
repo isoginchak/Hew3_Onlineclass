@@ -48,12 +48,6 @@ function onReady() {
     onStart();
 };
 
-/** On Window Loaded */
-window.addEventListener('load', () => {
-    console.log('Window Loaded');
-    onReady();
-});
-
 //ビデオ開始
 function onStart() {
     navigator.mediaDevices.getUserMedia({

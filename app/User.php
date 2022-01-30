@@ -17,7 +17,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         //テーブルのカラム
-        'schoolid','family_name', 'first_name', 'mailaddress','position','password',
+        'schoolid','family_name', 'first_name', 'email','position','password',
     ];
 
     /**

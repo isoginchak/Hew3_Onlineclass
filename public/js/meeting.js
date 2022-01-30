@@ -1,29 +1,29 @@
 let usersJsonData;
+const stringSessionId = ('0000000000000000' + sessionId).slice(-16);
 
-//ajax
-window.addEventListener('DOMContentLoaded', function () {
-    //ajax
-    $.ajax({
-        type: "GET", //形式
-        url: "/rest", //リクエストURL
-        contentType: "application/json; charset=utf-8",
-        dataType: "json", //データタイプ
-    }).done((data) => {
-        //成功した場合の処理
-        const json_string = JSON.stringify(data);
+async function ajax() {
+    try {
+        const res = await axios.get(`/rest`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const json_string = JSON.stringify(res.data);
         usersJsonData = JSON.parse(json_string);
-    })
-});
-
-$(document).ajaxComplete(function () {
+        console.log(usersJsonData);
+    } catch (e) {
+        console.log(e)
+    }
+}
+window.addEventListener('DOMContentLoaded', async function () {
+    await ajax();
+    onReady();
 
     const Peer = window.Peer;
     //初期設定 ビデオはオン オーディオオフ
     let videoToggle = 1;
     let audioToggle = 0;
     let roomId = "tmp";
-
-    //   console.log( usersJsonData[videoToggle].first_name); 
 
     (async function main() {
         const localVideo = document.getElementById('js-local-stream');
@@ -45,7 +45,6 @@ $(document).ajaxComplete(function () {
         let members = [];
         let localStream;
 
-
         //webカメラ・ビデオの取得
         try {
             //ビデオマイク
@@ -57,7 +56,6 @@ $(document).ajaxComplete(function () {
             videoToggle = -1;
             videoIcon.innerHTML = "videocam_off";
             videoErr.style.display = 'inline';
-
         }
 
         // Render local stream
@@ -67,7 +65,7 @@ $(document).ajaxComplete(function () {
         await localVideo.play().catch(console.error);
 
         // 自分のpeer作成
-        const peer = (window.peer = new Peer("0000000000000001", {
+        const peer = (window.peer = new Peer(stringSessionId, {
             key: window.__SKYWAY_KEY__,
             debug: 3,
         }));
@@ -118,13 +116,9 @@ $(document).ajaxComplete(function () {
         }
         // Register join handler
         function joinRoom() {
-
-            //名前取得
-            let stringUserId = peer.id;
-            const userId = Number(stringUserId);
-            const userFamilyName = usersJsonData[userId].family_name;
-            const userFirstName = usersJsonData[userId].first_name;
-
+            //顔認識起動
+            onReady();
+            
             console.log("join");
             // Note that you need to ensure the peer has connected to signaling server
             // before using methods of peer instance.
@@ -142,7 +136,11 @@ $(document).ajaxComplete(function () {
                 members.push(`${peer.id}`);
             });
             room.on('peerJoin', peerId => {
-                messages.innerHTML += `${peerId}さんが入室<br class='space'>`;
+                const intruder = Number(`${peerId}`);
+                //ID検索
+                const result = usersJsonData.find((u) => u.id === intruder);
+
+                messages.innerHTML += result.family_name+" "+result.first_name +'さんが入室<br class="space">';
 
                 //配列に格納
                 members.push(`${peerId}`);
@@ -166,10 +164,13 @@ $(document).ajaxComplete(function () {
                 src
             }) => {
                 const now = new Date();
-                const Hour = now.getHours();
-                const Min = ("0" + now.getMinutes()).slice(-2);
+                const hour = now.getHours();
+                const min = ("0" + now.getMinutes()).slice(-2);
+                const sender = Number(`${src}`);
+                // //ID検索
+                const result = usersJsonData.find((u) => u.id === sender);
                 // 送信されたメッセージと送信者を表示
-                messages.innerHTML += "<span class='sender-box'>" + `${src}` + "</span><br><div class='sender-message-box'>" + `${data}` + "</div><br><div class='message-time'>" + `${Hour}` + ":" + `${Min}` + "</div>";
+                messages.innerHTML += "<span class='sender-box'>" + result.family_name + " " + result.first_name + "</span><br><div class='sender-message-box'>" + `${data}` + "</div><br><div class='message-time'>" + `${hour}` + ":" + `${min}` + "</div>";
             });
 
             // メンバーの退出
@@ -180,7 +181,12 @@ $(document).ajaxComplete(function () {
                 remoteVideo.srcObject.getTracks().forEach(track => track.stop());
                 remoteVideo.srcObject = null;
                 remoteVideo.remove();
-                messages.innerHTML += `${peerId}さんが退出<br  class='space'>`;
+
+                const exiters = Number(`${peerId}`);
+                //ID検索
+                const result = usersJsonData.find((u) => u.id === exiters);
+
+                messages.innerHTML +=result.family_name+" "+result.first_name +'さんが退出<br  class="space">';
                 //配列から削除
                 for (i = 0; i < members.length; i++) {
                     if (members[i] == `${peerId}`) {
@@ -214,11 +220,11 @@ $(document).ajaxComplete(function () {
                     return;
                 }
                 const now = new Date();
-                const Hour = now.getHours();
-                const Min = ("0" + now.getMinutes()).slice(-2);
+                const hour = now.getHours();
+                const min = ("0" + now.getMinutes()).slice(-2);
                 // webscketを介してメッセージの送信
                 room.send(localText.value);
-                messages.innerHTML += "<span class='sender-box'>" + userFamilyName + " " + userFirstName + "</span><br><div class='my-message-box '>" + `${localText.value}` + "</div><br><div class='message-time'>" + `${Hour}` + ":" + `${Min}` + "</div>";
+                messages.innerHTML += "<span class='sender-box'>" + sessionFamilyName + " " + sessionFirstName + "</span><br><div class='my-message-box '>" + `${localText.value}` + "</div><br><div class='message-time'>" + `${hour}` + ":" + `${min}` + "</div>";
                 localText.value = '';
             }
 
@@ -287,6 +293,5 @@ $(document).ajaxComplete(function () {
         peer.on('error', console.error);
 
     })();
-
 
 });
