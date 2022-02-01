@@ -9,8 +9,6 @@ body {
     color: #49555e;
 }
 
-
-
 .container {
     width: 100vw;
     position: relative;
@@ -50,6 +48,25 @@ body {
     background-color: #333;
 
 }
+
+.attendance-list{
+    width: 300px;
+    margin: 0 auto;
+}
+.attendance{
+    display: flex;
+    align-self: center;
+}
+.attendance p{
+    width: 60%;
+
+}
+
+.size2{
+  margin-top: 15px;
+  margin-left: 20px;
+}
+
 
 #video-error{
     display: none;

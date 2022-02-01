@@ -42,8 +42,8 @@ window.addEventListener('DOMContentLoaded', async function () {
         const videoErr = document.getElementById('video-error');
         const memberIcon = document.getElementById('member-show');
         let key = false;
-        let members = [];
         let localStream;
+        let faceNone = [];
 
         //webカメラ・ビデオの取得
         try {
@@ -118,7 +118,7 @@ window.addEventListener('DOMContentLoaded', async function () {
         function joinRoom() {
             //顔認識起動
             onReady();
-            
+
             console.log("join");
             // Note that you need to ensure the peer has connected to signaling server
             // before using methods of peer instance.
@@ -133,22 +133,16 @@ window.addEventListener('DOMContentLoaded', async function () {
 
             room.once('open', () => {
                 messages.innerHTML += "入室しました<br class='space'>";
-                members.push(`${peer.id}`);
             });
             room.on('peerJoin', peerId => {
                 const intruder = Number(`${peerId}`);
                 //ID検索
                 const result = usersJsonData.find((u) => u.id === intruder);
-
-                messages.innerHTML += result.family_name+" "+result.first_name +'さんが入室<br class="space">';
-
-                //配列に格納
-                members.push(`${peerId}`);
-
+                messages.innerHTML += result.family_name + " " + result.first_name + 'さんが入室<br class="space">';
 
             });
 
-            // Render remote stream for new peer join in the room
+            // 他のユーザのストリームを受信した時
             room.on('stream', async stream => {
                 const newVideo = document.createElement('video');
                 newVideo.srcObject = stream;
@@ -159,18 +153,35 @@ window.addEventListener('DOMContentLoaded', async function () {
                 await newVideo.play().catch(console.error);
             });
 
+
+            //メッセージの受信
             room.on('data', ({
                 data,
                 src
             }) => {
-                const now = new Date();
-                const hour = now.getHours();
-                const min = ("0" + now.getMinutes()).slice(-2);
-                const sender = Number(`${src}`);
-                // //ID検索
-                const result = usersJsonData.find((u) => u.id === sender);
-                // 送信されたメッセージと送信者を表示
-                messages.innerHTML += "<span class='sender-box'>" + result.family_name + " " + result.first_name + "</span><br><div class='sender-message-box'>" + `${data}` + "</div><br><div class='message-time'>" + `${hour}` + ":" + `${min}` + "</div>";
+                if (`${data}` == "skywayhideen0") {
+                    //顔が検出されない
+                    if(!faceNone.includes(Number(`${src}`))){
+                        faceNone.push(Number(`${src}`));
+                    }
+
+                }
+                else if (`${data}` == "skywayhideen1") {
+                    //顔が検出される
+                    faceNone=faceNone.filter(function(x){return x != Number(`${src}`)});
+
+
+                }
+                else {
+                    const now = new Date();
+                    const hour = now.getHours();
+                    const min = ("0" + now.getMinutes()).slice(-2);
+                    const sender = Number(`${src}`);
+                    // //ID検索
+                    const result = usersJsonData.find((u) => u.id === sender);
+                    // 送信されたメッセージと送信者を表示
+                    messages.innerHTML += "<span class='sender-box'>" + result.family_name + " " + result.first_name + "</span><br><div class='sender-message-box'>" + `${data}` + "</div><br><div class='message-time'>" + `${hour}` + ":" + `${min}` + "</div>";
+                }
             });
 
             // メンバーの退出
@@ -186,14 +197,8 @@ window.addEventListener('DOMContentLoaded', async function () {
                 //ID検索
                 const result = usersJsonData.find((u) => u.id === exiters);
 
-                messages.innerHTML +=result.family_name+" "+result.first_name +'さんが退出<br  class="space">';
-                //配列から削除
-                for (i = 0; i < members.length; i++) {
-                    if (members[i] == `${peerId}`) {
-                        //spliceメソッドで要素を削除
-                        members.splice(i, 1);
-                    }
-                }
+                messages.innerHTML += result.family_name + " " + result.first_name + 'さんが退出<br  class="space">';
+
             });
 
             // 自身の退出
@@ -227,6 +232,7 @@ window.addEventListener('DOMContentLoaded', async function () {
                 messages.innerHTML += "<span class='sender-box'>" + sessionFamilyName + " " + sessionFirstName + "</span><br><div class='my-message-box '>" + `${localText.value}` + "</div><br><div class='message-time'>" + `${hour}` + ":" + `${min}` + "</div>";
                 localText.value = '';
             }
+
 
             //画面共有
             shareButton.addEventListener('click', shareBtnClick);
@@ -270,11 +276,54 @@ window.addEventListener('DOMContentLoaded', async function () {
             //一覧表示(出席確認)
             memberIcon.addEventListener('click', memberBtnClick);
             function memberBtnClick() {
-                console.log(members);
+                let members = [];
+                if(faces.size()===0){
+                    members.push('<div class=attendance><p>'+sessionFamilyName + " " + sessionFirstName+'</p> <i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
+                }
+                else{
+                    members.push('<div class=attendance><p>'+sessionFamilyName + " " + sessionFirstName+'</p><i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
+                }
+              
+                for (i = 0; i < room.members.length; i++) {
+                    let member = Number(room.members[i]);
+                    // //ID検索
+                    let result = usersJsonData.find((u) => u.id === member);
+                    if(faceNone.includes(member)){                      
+                        members.push('<div class=attendance><p>'+result.family_name + " " + result.first_name+ ' </p><i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
+                    }
+                    else{
+                        members.push('<div class=attendance><p>'+result.family_name + " " + result.first_name+'</p> <i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
+                    }
+
+                }
+                let text='<div class=attendance-list>';
+                const membersText = members.join('<br>');
+                text+=membersText;
+                text+='</div>'; 
+                swal.fire({
+                    title: "出席者一覧",
+                    html: text,
+                    confirmButtonColor: '#5CA0E8',
+                })
+            }
+
+            //30秒おきに顔取得
+            setInterval(sendFaceDetection, 5000);
+            function sendFaceDetection() {
+                if (faces.size() === 0) {
+                    room.send("skywayhideen0");
+                }
+                else {
+                    room.send("skywayhideen1");
+                }
+
             }
 
 
         };
+
+
+
 
         //peerを受け取ったら作動する
         const receivepeer = peer.on('open', () => {
