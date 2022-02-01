@@ -1,7 +1,13 @@
 let usersJsonData;
+
+//ルームID取得
+let meetingId = location.search;
+meetingId=meetingId.replace("?meetingid=", "");
+
+//PeeriD作成
 const stringSessionId = ('0000000000000000' + sessionId).slice(-16);
 
-async function ajax() {
+async function getUsers() {
     try {
         const res = await axios.get(`/rest`, {
             headers: {
@@ -10,20 +16,18 @@ async function ajax() {
         });
         const json_string = JSON.stringify(res.data);
         usersJsonData = JSON.parse(json_string);
-        console.log(usersJsonData);
     } catch (e) {
         console.log(e)
     }
 }
 window.addEventListener('DOMContentLoaded', async function () {
-    await ajax();
-    onReady();
+    await getUsers();
 
     const Peer = window.Peer;
     //初期設定 ビデオはオン オーディオオフ
     let videoToggle = 1;
     let audioToggle = 0;
-    let roomId = "tmp";
+    let roomId = meetingId;
 
     (async function main() {
         const localVideo = document.getElementById('js-local-stream');
@@ -44,6 +48,13 @@ window.addEventListener('DOMContentLoaded', async function () {
         let key = false;
         let localStream;
         let faceNone = [];
+        let teacher;
+
+        if (sessionPositon == 0) {
+            //顔認識起動
+            onReady();
+        }
+
 
         //webカメラ・ビデオの取得
         try {
@@ -115,12 +126,13 @@ window.addEventListener('DOMContentLoaded', async function () {
         }
         // Register join handler
         function joinRoom() {
-            //顔認識起動
-            onReady();
+
+            if (sessionPositon == 0) {
+                //顔認識起動
+                onReady();
+            }
 
             console.log("join");
-            // Note that you need to ensure the peer has connected to signaling server
-            // before using methods of peer instance.
             if (!peer.open) return;
 
             //roomの選択
@@ -169,8 +181,9 @@ window.addEventListener('DOMContentLoaded', async function () {
                 else if (`${data}` == "skywayhideen1") {
                     //顔が検出される
                     faceNone = faceNone.filter(function (x) { return x != Number(`${src}`) });
-
-
+                }
+                else if (`${data}` == "skywayhideen9") {
+                    teacher = Number(`${src}`);
                 }
                 else {
                     const now = new Date();
@@ -233,7 +246,8 @@ window.addEventListener('DOMContentLoaded', async function () {
 
                 localText.value = '';
             }
-            //エスケープ処理
+
+            //テキストのエスケープ処理
             function escapeHtml(string) {
                 if (typeof string !== 'string') {
                     return string;
@@ -294,22 +308,33 @@ window.addEventListener('DOMContentLoaded', async function () {
             memberIcon.addEventListener('click', memberBtnClick);
             function memberBtnClick() {
                 let members = [];
-                if (faces.size() === 0) {
-                    members.push('<div class=attendance><p>' + sessionFamilyName + " " + sessionFirstName + '</p> <i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
+
+                if (sessionPositon == "1") {
+                    members.push('<div class=attendance><p>' + sessionFamilyName + " " + sessionFirstName + '</p><i class="material-icons-outlined icon-size size2" id="face">badge</i></div>');
                 }
                 else {
-                    members.push('<div class=attendance><p>' + sessionFamilyName + " " + sessionFirstName + '</p><i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
+                    if (faces.size() === 0) {
+                        members.push('<div class=attendance><p>' + sessionFamilyName + " " + sessionFirstName + '</p> <i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
+                    }
+                    else {
+                        members.push('<div class=attendance><p>' + sessionFamilyName + " " + sessionFirstName + '</p><i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
+                    }
                 }
 
                 for (i = 0; i < room.members.length; i++) {
                     let member = Number(room.members[i]);
                     // //ID検索
                     let result = usersJsonData.find((u) => u.id === member);
-                    if (faceNone.includes(member)) {
-                        members.push('<div class=attendance><p>' + result.family_name + " " + result.first_name + ' </p><i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
+                    if (teacher == room.members[i]) {
+                        members.push('<div class=attendance><p>' + result.family_name + " " + result.first_name + '</p><i class="material-icons-outlined icon-size size2" id="face">badge</i></div>');
                     }
                     else {
-                        members.push('<div class=attendance><p>' + result.family_name + " " + result.first_name + '</p> <i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
+                        if (faceNone.includes(member)) {
+                            members.push('<div class=attendance><p>' + result.family_name + " " + result.first_name + ' </p><i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
+                        }
+                        else {
+                            members.push('<div class=attendance><p>' + result.family_name + " " + result.first_name + '</p> <i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
+                        }
                     }
 
                 }
@@ -323,15 +348,21 @@ window.addEventListener('DOMContentLoaded', async function () {
                     confirmButtonColor: '#5CA0E8',
                 })
             }
+            sendFaceDetection() ;
 
-            //30秒おきに顔取得
-            setInterval(sendFaceDetection, 30000);
+            //15秒おきに顔取得
+            setInterval(sendFaceDetection, 15000);
             function sendFaceDetection() {
-                if (faces.size() === 0) {
-                    room.send("skywayhideen0");
+                if (sessionPositon == 1) {
+                    room.send("skywayhideen9");
                 }
                 else {
-                    room.send("skywayhideen1");
+                    if (faces.size() == 0) {
+                        room.send("skywayhideen0");
+                    }
+                    else {
+                        room.send("skywayhideen1");
+                    }
                 }
 
             }
@@ -353,7 +384,7 @@ window.addEventListener('DOMContentLoaded', async function () {
 
         });
 
-        //人のビデオを押したら拡大 自分のビデオ縮小
+        //人のビデオを押したら拡大 自分のビデオ縮小を作りたい
         peer.on('error', console.error);
 
     })();

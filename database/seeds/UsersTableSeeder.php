@@ -30,5 +30,25 @@ class UsersTableSeeder extends Seeder
             'position' => '0'
         ];
         DB::table('users')->insert($param);
+
+        $param = [
+            'schoolid' => '1',
+            'family_name' => '橋本',
+            'first_name' => '香',
+            'email' => 'ccc@ccc.com',
+            'password' =>  Hash::make('2023online'),
+            'position' => '1'
+        ];
+        DB::table('users')->insert($param);
+
+        $param = [
+            'schoolid' => '1',
+            'family_name' => '佐藤',
+            'first_name' => '優樹',
+            'email' => 'ddd@ddd.com',
+            'password' =>  Hash::make('2023online'),
+            'position' => '0'
+        ];
+        DB::table('users')->insert($param);
     }
 }

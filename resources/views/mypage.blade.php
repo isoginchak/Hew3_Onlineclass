@@ -10,9 +10,25 @@
     </header>
 
     <div class="menubar">
-    <!-- <p>{{ Auth::user()->first_name }}</p> -->
+     @if(Auth::user()->position===0)
+        <p>生徒</p>
+        @foreach ($classes as $class)
+            <a href="/student-meeting?meetingid={{ $class->hash }}">{{ $class->class_name }}</a>
+        @endforeach
+    @else
+        <p>教師</p>
+         @foreach ($classes as $class)
+             <a href="/teacher-meeting?meetingid={{ $class->hash }}">{{ $class->class_name }}</a>
+         @endforeach
+    @endif 
+
 
     </div>
+    <div>
+        
+    </div>
+
+
 
     
 

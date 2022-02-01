@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
+
 class RegisterController extends Controller
 {
     /*
@@ -52,7 +53,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'family-name' => ['required', 'string', 'max:255'],
-            'first-name' => ['required', 'string', 'max:255'],           
+            'first-name' => ['required', 'string', 'max:255'],
             'mailaddress' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'school-id' => ['required'],
             'position' => ['required'],
@@ -82,11 +83,7 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
 
-       $items=DB::select('select * from schools');
-       return view('auth.register', ['items'=>$items]);
-   }
-
-
-
-    
+        $items = DB::table('schools')->get();
+        return view('auth.register', ['items' => $items]);
+    }
 }

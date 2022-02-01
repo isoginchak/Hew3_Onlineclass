@@ -8,6 +8,7 @@ class TeacherMeetingController extends Controller
 {
     public function index(Request $request)
     { 
+        
         $user = Auth::user();
         return view('meeting.teacher-meetingroom',[ 'user' => $user ]);
     }
