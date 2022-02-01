@@ -80,9 +80,8 @@ window.addEventListener('DOMContentLoaded', async function () {
         videoButton.addEventListener('click', videoBtnClick);
 
         function videoBtnClick() {
-            if (videoToggle == -1) {
-                return;
-            }
+            if (videoToggle == -1) return;
+
             if (videoToggle == 0) { //ビデオをつける
                 localStream.getVideoTracks().forEach((track) => (track.enabled = true));
                 videoToggle = 1;
@@ -122,9 +121,8 @@ window.addEventListener('DOMContentLoaded', async function () {
             console.log("join");
             // Note that you need to ensure the peer has connected to signaling server
             // before using methods of peer instance.
-            if (!peer.open) {
-                return;
-            }
+            if (!peer.open) return;
+
             //roomの選択
             const room = peer.joinRoom(roomId, {
                 mode: 'sfu',
@@ -134,6 +132,8 @@ window.addEventListener('DOMContentLoaded', async function () {
             room.once('open', () => {
                 messages.innerHTML += "入室しました<br class='space'>";
             });
+
+
             room.on('peerJoin', peerId => {
                 const intruder = Number(`${peerId}`);
                 //ID検索
@@ -161,14 +161,14 @@ window.addEventListener('DOMContentLoaded', async function () {
             }) => {
                 if (`${data}` == "skywayhideen0") {
                     //顔が検出されない
-                    if(!faceNone.includes(Number(`${src}`))){
+                    if (!faceNone.includes(Number(`${src}`))) {
                         faceNone.push(Number(`${src}`));
                     }
 
                 }
                 else if (`${data}` == "skywayhideen1") {
                     //顔が検出される
-                    faceNone=faceNone.filter(function(x){return x != Number(`${src}`)});
+                    faceNone = faceNone.filter(function (x) { return x != Number(`${src}`) });
 
 
                 }
@@ -221,16 +221,33 @@ window.addEventListener('DOMContentLoaded', async function () {
             //メッセージの送信
             function onClickSend() {
                 //空文字は送信できない
-                if (localText.value == "") {
-                    return;
-                }
+                if (localText.value == "") return;
+                const escapeText = escapeHtml(localText.value);
+
                 const now = new Date();
                 const hour = now.getHours();
                 const min = ("0" + now.getMinutes()).slice(-2);
                 // webscketを介してメッセージの送信
-                room.send(localText.value);
-                messages.innerHTML += "<span class='sender-box'>" + sessionFamilyName + " " + sessionFirstName + "</span><br><div class='my-message-box '>" + `${localText.value}` + "</div><br><div class='message-time'>" + `${hour}` + ":" + `${min}` + "</div>";
+                room.send(escapeText);
+                messages.innerHTML += "<span class='sender-box'>" + sessionFamilyName + " " + sessionFirstName + "</span><br><div class='my-message-box '>" + escapeText + "</div><br><div class='message-time'>" + `${hour}` + ":" + `${min}` + "</div>";
+
                 localText.value = '';
+            }
+            //エスケープ処理
+            function escapeHtml(string) {
+                if (typeof string !== 'string') {
+                    return string;
+                }
+                return string.replace(/[&'`"<>]/g, function (match) {
+                    return {
+                        '&': '&amp;',
+                        "'": '&#x27;',
+                        '`': '&#x60;',
+                        '"': '&quot;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                    }[match]
+                });
             }
 
 
@@ -277,29 +294,29 @@ window.addEventListener('DOMContentLoaded', async function () {
             memberIcon.addEventListener('click', memberBtnClick);
             function memberBtnClick() {
                 let members = [];
-                if(faces.size()===0){
-                    members.push('<div class=attendance><p>'+sessionFamilyName + " " + sessionFirstName+'</p> <i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
+                if (faces.size() === 0) {
+                    members.push('<div class=attendance><p>' + sessionFamilyName + " " + sessionFirstName + '</p> <i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
                 }
-                else{
-                    members.push('<div class=attendance><p>'+sessionFamilyName + " " + sessionFirstName+'</p><i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
+                else {
+                    members.push('<div class=attendance><p>' + sessionFamilyName + " " + sessionFirstName + '</p><i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
                 }
-              
+
                 for (i = 0; i < room.members.length; i++) {
                     let member = Number(room.members[i]);
                     // //ID検索
                     let result = usersJsonData.find((u) => u.id === member);
-                    if(faceNone.includes(member)){                      
-                        members.push('<div class=attendance><p>'+result.family_name + " " + result.first_name+ ' </p><i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
+                    if (faceNone.includes(member)) {
+                        members.push('<div class=attendance><p>' + result.family_name + " " + result.first_name + ' </p><i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
                     }
-                    else{
-                        members.push('<div class=attendance><p>'+result.family_name + " " + result.first_name+'</p> <i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
+                    else {
+                        members.push('<div class=attendance><p>' + result.family_name + " " + result.first_name + '</p> <i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
                     }
 
                 }
-                let text='<div class=attendance-list>';
+                let text = '<div class=attendance-list>';
                 const membersText = members.join('<br>');
-                text+=membersText;
-                text+='</div>'; 
+                text += membersText;
+                text += '</div>';
                 swal.fire({
                     title: "出席者一覧",
                     html: text,
@@ -308,7 +325,7 @@ window.addEventListener('DOMContentLoaded', async function () {
             }
 
             //30秒おきに顔取得
-            setInterval(sendFaceDetection, 5000);
+            setInterval(sendFaceDetection, 30000);
             function sendFaceDetection() {
                 if (faces.size() === 0) {
                     room.send("skywayhideen0");
@@ -321,8 +338,6 @@ window.addEventListener('DOMContentLoaded', async function () {
 
 
         };
-
-
 
 
         //peerを受け取ったら作動する
