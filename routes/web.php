@@ -20,9 +20,12 @@ Route::get('teacher-meeting', 'TeacherMeetingController@index');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 
 Route::resource('rest','RestMeetingController');
+Route::resource('postquestion', 'RestQuestionController');
 
 // Auth::routes([
 //  
 // ]);
 Route::get('/mypage', 'MypageController@index');
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('/hello/add', 'HelloController@add');

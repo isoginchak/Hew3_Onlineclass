@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\UsersRestData;
+use App\Models\QuestionRestData;
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Question\Question;
+use Illuminate\Support\Facades\DB;
 
-class RestMeetingController extends Controller
+class RestQuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,8 +15,7 @@ class RestMeetingController extends Controller
      */
     public function index()
     {
-        $items=UsersRestdata::all();
-        return $items->toArray();
+        //
     }
 
     /**
@@ -36,6 +37,18 @@ class RestMeetingController extends Controller
     public function store(Request $request)
     {
        
+        $question = new QuestionRestData;
+        $question->user_id = $request->user_id;
+        $question->question = $request->question;
+        $question->share = $request->share;
+
+        $class_id = DB::table('classes')->where('hash',$request->class_id)->select('id')->get();
+        // logger($class_id[0]->id);
+        $question->class_id = $class_id[0]->id;
+        $question->save();
+
+        return response($question, 200) -> header('Content-Type','application/json');
+
     }
 
     /**
@@ -46,8 +59,7 @@ class RestMeetingController extends Controller
      */
     public function show($id)
     {
-        $item=UsersRestdata::find($id);
-        return $item->toArray();
+        //
     }
 
     /**

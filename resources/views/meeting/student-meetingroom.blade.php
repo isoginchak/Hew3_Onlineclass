@@ -22,7 +22,7 @@
                     <a id="screensharing"><i class="material-icons-outlined icon-size pointer" id="volume-i">screen_share</i></a>
                     <a id="question-box"><i class="material-icons-outlined icon-size pointer" id="help-i">live_help</i></a>
                     <a id="member-show"><i class="material-icons-outlined icon-size pointer" id="member-i">people_alte</i></a>
-                    <a id="js-leave-trigger"><i class="material-icons icon-size pointer">exit_to_app</i></a>
+                    <a id="js-leave-trigger" href="/mypage" onclick="onClickSend();"><i class="material-icons icon-size pointer">exit_to_app</i></a>
                 </div>
             </div>
             <div class="remote-streams" id="js-remote-streams"></div>

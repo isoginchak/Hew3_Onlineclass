@@ -36,10 +36,10 @@ function helpBtnClick() {
                 if (result2.isConfirmed) {
                     const questionShare = result2.value;
                     //Ajax
-                    const questionData= {user_id:sessionId,class_id:meetingId,question:question,share:questionShare};
+                    const questionData = { user_id: sessionId, class_id: meetingId, question: question, share: questionShare };
                     // JSON 形式への変換
-                    let  questionDataJSON = JSON.stringify(questionData);
-                    console.log(questionDataJSON);
+                    let questionDataJSON = JSON.stringify(questionData);
+                    postQuestion(questionDataJSON);
 
                 }
                 else {
@@ -52,19 +52,19 @@ function helpBtnClick() {
 
 }
 
-// async function postQuestion() {
-//     try {
-//         const res = await axios.post(`/rest`, {
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//         });
-//         const json_string = JSON.stringify(res.data);
-//         usersJsonData = JSON.parse(json_string);
-//     } catch (e) {
-//         console.log(e)
-//     }
-// }
+async function postQuestion(questionDataJSON) {
+    try {
+        const res = await axios.post(`/postquestion`, questionDataJSON, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log(res)
+
+    } catch (e) {
+        console.log(e)
+    }
+}
 
 //離席トグル
 leavingToggle.addEventListener('click', leavingToggleClick)

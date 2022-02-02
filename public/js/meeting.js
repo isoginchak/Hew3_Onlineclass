@@ -223,6 +223,8 @@ window.addEventListener('DOMContentLoaded', async function () {
                     remoteVideo.srcObject.getTracks().forEach(track => track.stop());
                     remoteVideo.srcObject = null;
                     remoteVideo.remove();
+                    window.location.href = "/mypage";
+
                 });
             });
 
@@ -350,8 +352,8 @@ window.addEventListener('DOMContentLoaded', async function () {
             }
             sendFaceDetection() ;
 
-            //15秒おきに顔取得
-            setInterval(sendFaceDetection, 15000);
+            //5秒おきに顔取得
+            setInterval(sendFaceDetection, 5000);
             function sendFaceDetection() {
                 if (sessionPositon == 1) {
                     room.send("skywayhideen9");
