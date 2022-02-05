@@ -18,7 +18,7 @@ class MypageController extends Controller
             ->where('participation.user_id',$id)
             ->get();
 
-        return view('mypage',[ 'user' => $user ],[ 'classes' => $classes ]);
+        return view('mypage.mypage-timetable',[ 'user' => $user ],[ 'classes' => $classes ]);
 
     }
 }

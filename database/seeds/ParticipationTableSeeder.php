@@ -22,6 +22,11 @@ class ParticipationTableSeeder extends Seeder
         ];
         DB::table('participation')->insert($param);
         $param = [
+            'user_id' => '1',
+            'class_id' => '3',
+        ];
+        DB::table('participation')->insert($param);
+        $param = [
             'user_id' => '2',
             'class_id' => '1',
         ];

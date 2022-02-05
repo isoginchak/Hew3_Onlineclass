@@ -1,0 +1,238 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Hiragino sans, Hiragino Kaku Gothic ProN, "ヒラギノ角ゴ ProN W3", Meiryo, "メイリオ", Osaka, MS PGothic, "ＭＳ Ｐゴシック", Helvetica, Arial, sans-serif;
+    color: #212121;
+    margin: 0 auto;
+    height: 100vh;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+.wrap {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.side {
+    position: relative;
+    background-color: #0078c8;
+    height: 100vh;
+    width: 260px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.logo img {
+    width: 170px;
+    text-align: center;
+}
+
+.logo {
+    text-align: center;
+    padding-top: 15px;
+}
+
+.icon-white {
+    font-size: 40px;
+    color: #fff;
+}
+
+.menu {
+    color: #fff;
+    display: flex;
+    padding-left: 30px;
+    margin-top: 5px;
+    height: 65px;
+    align-items: center;
+
+}
+
+.menu1 {
+    margin-top: 45px;
+}
+
+.menu p {
+    line-height: 45px;
+    padding-left: 10px;
+    font-size: 20px;
+}
+
+.sidemenu-under {
+    position: absolute;
+    bottom: 10px;
+}
+
+.main {
+    margin: 0 auto;
+}
+
+.main-menu {
+    width: 80vw;
+    height: 65px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-top: 40px;
+    margin: 40px auto 0 auto;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.left-menu p {
+    font-size: 20px;
+    margin-left: 40px;
+    line-height: 65px;
+}
+
+.menu-re {
+    position: relative;
+}
+
+.circle {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 23px;
+    width: 15px;
+    height: 15px;
+    background: #FA4923;
+    border-radius: 50%;
+}
+
+.icon-black {
+    font-size: 40px;
+    color: #49555e;
+    line-height: 65px;
+}
+
+.icon-blue {
+    font-size: 40px;
+    color: #0078c8;
+    line-height: 65px;
+}
+
+.right-menu {
+    display: flex;
+    /* width: 20%; */
+    justify-content: space-around;
+}
+
+.right-menu p {
+    line-height: 65px;
+    margin-right: 40px;
+}
+
+.account {
+    padding-left: 20px;
+    display: flex;
+}
+
+.account p {
+    margin-left: 10px;
+}
+
+.title p {
+    color: #49555e;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 80px;
+    margin-left: 10px;
+}
+
+.title {
+    display: flex;
+    margin-top: 40px;
+}
+
+.title i {
+    font-size: 70px;
+}
+
+table {
+    width: 80vw;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-top: 40px;
+    table-layout: fixed;
+
+}
+
+table, table td, table th {
+    border-collapse: collapse;
+    border: solid 1px #DDD;
+
+}
+
+th {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+thead th {
+    background: #FBFBFB;
+    height: 60px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.th1 {
+    background: #FBFBFB;
+    width: 60px;
+}
+
+
+td {
+    width: 70px;
+    height: 70px;
+    word-break: break-all;
+    text-align: center;
+}
+
+.td-a {
+    display: flex;
+    align-items: center;
+    height: 70px;
+    text-align: center;
+    line-height: 70px;
+    font-weight: 600;
+
+    /* background-color: #B5DBF2; */
+
+}
+
+a {
+    text-decoration: none;
+}
+
+td a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #49555e;
+    font-weight: 600;
+}
+
+td a:hover {
+    opacity: 0.8;
+}
+
+.timetable {
+    height: 70px;
+}
+
+.target {
+    background-color: #3B8FC7;
+}
+
+.link-icon {
+    display: inline-block;
+    font-size: 20px;
+    align-items: center;
+    padding-left: 3px;
+
+}
