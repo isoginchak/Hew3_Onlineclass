@@ -340,6 +340,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: #79C3FF;
+  border-radius: 5px;
 }
 
 .space{

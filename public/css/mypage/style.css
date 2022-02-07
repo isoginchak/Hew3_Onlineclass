@@ -8,24 +8,25 @@ body {
     color: #212121;
     margin: 0 auto;
     height: 100vh;
+    overflow: hidden;
+    top: 0;
 }
 
 body::-webkit-scrollbar {
     display: none;
 }
 
-
-
 .wrap {
     display: flex;
-    height: 100vh;
+    height: 100%;
     width: 100vw;
 }
 
 .side {
     position: relative;
+    /* position: fixed; */
     background-color: #0078c8;
-    height: 100vh;
+    height: 100%;
     width: 260px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
@@ -68,6 +69,7 @@ body::-webkit-scrollbar {
 .sidemenu-under {
     position: absolute;
     bottom: 10px;
+    width: 260px;
 }
 
 .main {
@@ -155,8 +157,13 @@ body::-webkit-scrollbar {
     font-size: 70px;
 }
 
+.article {
+    width: 80vw;
+}
+
 table {
     width: 80vw;
+    margin: 0 auto;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     margin-top: 40px;
     table-layout: fixed;
@@ -225,7 +232,7 @@ td a:hover {
     height: 70px;
 }
 
-.target {
+.menu:hover {
     background-color: #3B8FC7;
 }
 
@@ -235,4 +242,104 @@ td a:hover {
     align-items: center;
     padding-left: 3px;
 
+}
+
+.questions-wrap {
+    z-index: 2;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 80vw;
+    height: 75vh;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+
+.question-wrap {
+
+    width: 78vw;
+    margin: 10px auto 0 auto;
+}
+
+.q-wrap {
+    margin-top: 3px;
+    position: relative;
+    background: #77CFDB;
+    width: 60%;
+    padding: 20px 30px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.q-logo {
+    position: absolute;
+    top: 0px;
+    left: 15px;
+    color: #fff;
+    font-size: 50px;
+}
+
+.q-text, .a-text {
+    background-color: #fff;
+    width: 90%;
+    border-radius: 10px;
+    margin-left: 5%;
+    padding: 30px 15px;
+}
+
+.a-wrap {
+    position: relative;
+    margin: 20px 0 0 auto;
+    background: #5CA0E8;
+    width: 60%;
+    padding: 20px 30px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.question-form {
+    padding: 30px 15px;
+    width: 90%;
+    border-radius: 10px;
+    margin-left: 50px;
+    border: none;
+}
+
+.submit {
+    margin: 10px 0px 0 auto;
+    text-align: right;
+
+}
+
+.question-submit {
+    cursor: pointer;
+    width: 80px;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    background: #5CA0E8;
+    color: #fff;
+    font-size: 17px;
+    margin: 10px 0px 0 auto;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+    background: #fafafa;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(161, 169, 177);
+    border-radius: 5px;
+}
+
+.space {
+    padding-bottom: 10px;
+}
+
+.question-form:focus {
+    outline: none;
+    border: 2px solid rgb(161, 169, 177);
 }

@@ -21,11 +21,17 @@ Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('re
 
 Route::resource('rest','RestMeetingController');
 Route::resource('postquestion', 'RestQuestionController');
+Route::resource('putanswer', 'RestAnswerController');
 
 // Auth::routes([
 //  
 // ]);
 Route::get('/mypage', 'MypageController@index');
+Route::get('/mypage-news', 'MypageController@news');
+Route::get('/mypage-question', 'MypageController@question');
+Route::get('/mypage-log', 'MypageController@log');
+Route::get('/mypage-setup', 'MypageController@setup');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/hello/add', 'HelloController@add');

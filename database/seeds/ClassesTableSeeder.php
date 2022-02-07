@@ -30,7 +30,7 @@ class ClassesTableSeeder extends Seeder
     ];
      DB::table('classes')->insert($param);
      $param = [
-        'teacher_id' => '1',
+        'teacher_id' => '3',
         'class_name' => 'iPhoneアプリ開発',
         'start_frame' => '2',
         'end_frame' => '2',

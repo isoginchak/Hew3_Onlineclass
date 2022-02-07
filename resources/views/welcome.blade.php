@@ -20,7 +20,7 @@
         <div class="menubar">
             <div class="logo-wrap">
                 <a href="#">
-                    <img src="/img/logo.svg" alt="ロゴ" class="logo">
+                    <img src="/img/logo.png" alt="ロゴ" class="logo">
                 </a>
             </div>
             <div class="menu-wrap">
