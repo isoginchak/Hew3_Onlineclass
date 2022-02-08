@@ -35,7 +35,8 @@ class MypageController extends Controller
         ->leftjoin('users', 'questions.user_id', '=', 'users.id')
         ->leftjoin('classes', 'questions.class_id', '=', 'classes.id')
         ->where('participation.user_id', $id)
-        ->select('questions.id as question_id','classes.class_name','users.family_name','users.first_name','question','solve','answer')
+        ->select('questions.id as question_id','classes.class_name','users.family_name','users.first_name','question','solve','answer','questions.created_at as created_at')
+        ->latest()
         ->get();
 
         return view('mypage.mypage-question',['questions' => $questions]);

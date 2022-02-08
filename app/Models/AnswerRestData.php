@@ -9,7 +9,7 @@ class AnswerRestData extends Model
     protected $table = 'questions';
     protected $fillable = [
         //テーブルのカラム
-        'user_id','class_id', 'question', 'share','answer','solve'
+        'user_id','class_id', 'question', 'share','answer','solve','created_at'
     ];
 
 }

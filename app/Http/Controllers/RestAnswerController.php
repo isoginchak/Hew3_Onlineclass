@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\AnswerRestData;
 use Illuminate\Http\Request;
 
@@ -38,7 +37,7 @@ class RestAnswerController extends Controller
         $table = new AnswerRestData;
         $change_table = $table::find($request->id);
         $change_table->fill(['answer' => $request->answer,'solve' => $request->solve])->save();
-
+    
     }
 
     /**

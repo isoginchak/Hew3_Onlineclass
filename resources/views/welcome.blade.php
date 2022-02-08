@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div class="wrapper-1">
+    <div class="wrapper-1" >
         <div class="menubar">
             <div class="logo-wrap">
                 <a href="#">
@@ -25,26 +25,22 @@
             </div>
             <div class="menu-wrap">
                 <ul class="menu-ul">
-                    <li><a href="" class="colorb">OnlineClassとは</a></li>
-                    <li><a href="" class="colorb">機能</a></li>
-                    <li><a href="" class="colorb">ご利用方法</a></li>
+                    <li><a href="#content1" class="colorb">OnlineClassとは</a></li>
+                    <li><a href="#content2" class="colorb">機能</a></li>
+                    <li><a href="#content3" class="colorb">ご利用方法</a></li>
                     <li class="circle-border"><a href="{{ route('login') }}" class="colorf">ログイン・会員登録</a></li>
-                    <!-- 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif -->
                 </ul>
             </div>
         </div>
     </div>
     <div class="top-img">
-        <div class="caption-wrap" >
+        <div class="caption-wrap">
             <p>学校のオンライン授業を<br>より受けやすく。</p>
         </div>
     </div>
     <div class="wrapper">
         <section>
-            <div data-aos="fade-up">
+            <div data-aos="fade-up" id="content1">
                 <h2>About</h2>
                 <h1>OnlineClassとは</h1>
                 <hr class="sec-hr">
@@ -56,7 +52,7 @@
         </section>
 
         <section>
-            <div data-aos="fade-up">
+            <div data-aos="fade-up" id="content2">
                 <h2>Features</h2>
                 <h1>機能</h1>
                 <hr class="sec-hr">
@@ -93,7 +89,7 @@
             </div>
         </section>
         <section>
-            <div data-aos="fade-up">
+            <div data-aos="fade-up" id="content3">
                 <h2>How to</h2>
                 <h1>ご利用方法</h1>
                 <hr class="sec-hr">
@@ -191,7 +187,7 @@
 
     </div>
     <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
-    <script  src="{{ asset('js/fadein.js') }}"></script>
+    <script src="{{ asset('js/fadein.js') }}"></script>
 </body>
 
 </html>

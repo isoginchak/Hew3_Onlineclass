@@ -5,6 +5,7 @@
 
 @section('content')
 <div class="questions-wrap">
+
     @foreach ( $questions as $question )
     <div class="question-wrap">
         <div class="question">
@@ -18,10 +19,13 @@
                 </div>
 
             </div>
+            <div class="question-date">
+                <p> {{ $question->created_at}}</p>
+            </div>
             @if( $question->solve==0 && Auth::user()->position===1)
             <div class="form">
                 <div class="a-wrap" id="form-{{$question->question_id}}">
-                    <p class="q-logo">！</p>
+                    <p class="a-logo">！</p>
 
                     <input name="answer " type="textarea" class="question-form" placeholder="回答を入力してください">
                 </div>
@@ -30,17 +34,14 @@
                 </div>
             </div>
 
-
             @elseif($question->solve==0 && Auth::user()->position===0)
             <div class="a-wrap">
-                <p class="q-logo">！</p>
+                <p class="a-logo">！</p>
                 <div class="a-text">
                     <p>まだお返事がありません</p>
                 </div>
 
             </div>
-
-
 
             @else
             <div class="a-wrap">
@@ -52,9 +53,8 @@
             </div>
             @endif
 
-
         </div>
-
+        <hr class="quesrion-hr">
 
     </div>
     @endforeach

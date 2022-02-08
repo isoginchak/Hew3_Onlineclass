@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Exceptions;
-
+use Illuminate\Session\TokenMismatchException;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -50,6 +50,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof TokenMismatchException) {
+            // ②
+            \Session::flash('message', 'セッションが切れました。');
+            return redirect()->route('/');
+        }
         return parent::render($request, $exception);
     }
 }

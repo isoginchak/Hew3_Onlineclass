@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header">{{ __('新規会員登録') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
@@ -59,7 +59,7 @@
                             <label for="school-id" class="col-md-4 col-form-label text-md-right">{{ __('学校名') }}</label>
 
                             <div class="col-md-6">
-                                <select type="selsect" name="school-id" id="school-id">
+                                <select type="selsect" name="school-id" id="school-id" class="form-control" >
                                 <option value="" selected>学校を選択してください</option>
                                 @foreach ($items as $item)
                                 <option value="{{ $item->school_id }}" >{{ $item->school_name }}</option>
@@ -119,7 +119,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('送信') }}
+                                    {{ __('登録') }}
                                 </button>
                             </div>
                         </div>

@@ -251,6 +251,7 @@ td a:hover {
     height: 75vh;
     overflow: hidden;
     overflow-y: scroll;
+    padding-top: 20px;
 }
 
 
@@ -276,6 +277,14 @@ td a:hover {
     top: 0px;
     left: 15px;
     color: #fff;
+    font-size: 50px;
+}
+
+.a-logo {
+    position: absolute;
+    top: 0px;
+    left: 15px;
+    color: #ffe401;
     font-size: 50px;
 }
 
@@ -342,4 +351,17 @@ td a:hover {
 .question-form:focus {
     outline: none;
     border: 2px solid rgb(161, 169, 177);
+}
+
+.quesrion-hr {
+    border: #DDD solid 1px;
+    margin: 40px 0;
+}
+
+.question-date {
+    width: 60%;
+    text-align: right;
+    padding-left: 55px;
+    font-size: 14px;
+    padding-top: 5px;
 }

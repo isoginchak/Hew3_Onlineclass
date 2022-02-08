@@ -12,20 +12,22 @@ function formPut(id) {
     const answerData = { id: id, answer: inputText, solve: 1 };
     // JSON 形式への変換
     let answerDataJSON = JSON.stringify(answerData);
-    putQuestion(answerDataJSON,id);
+    putQuestion(answerDataJSON);
 
 
 }
 
 
-async function putQuestion(answerDataJSON,id) {
+async function putQuestion(answerDataJSON) {
     try {
         const res = await axios.post(`/putanswer`, answerDataJSON, {
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        console.log(res)
+        //リダイレクト
+        location.href='/mypage-question';
+
 
     } catch (e) {
         console.log(e)
