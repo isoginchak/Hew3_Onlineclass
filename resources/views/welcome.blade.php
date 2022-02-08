@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div class="wrapper-1" >
+    <div class="wrapper-1">
         <div class="menubar">
             <div class="logo-wrap">
                 <a href="#">
@@ -103,7 +103,7 @@
                     <div class="img-box">
                         <img src="/img/teacher2.png" alt="" class="howtoimg">
                         <p class="howto-p">教師アカウント</p>
-                        <p class="id-p">ID:PASS:</p>
+                        <p class="id-p">MAIL:teacher@aaa.com<br>PASS:2023online</p>
                         <div class="white-box">
                             <i class="material-icons-outlined"> mouse</i>
                             <p> 時間割をクリック</p>
@@ -132,6 +132,11 @@
                             <i class="material-icons-outlined half-i2">question_answer</i>
                             <p>質問への回答</p>
                         </div>
+                        <div class="white-box">
+                            <i class="material-icons-outlined half-i2">feed</i>
+                            <p>お知らせの送信</p>
+                        </div>
+
 
                     </div>
 
@@ -140,7 +145,7 @@
                     <div class="img-box">
                         <img src="/img/student.png" alt="" class="howtoimg">
                         <p class="howto-p">生徒アカウント</p>
-                        <p class="id-p">ID:PASS:</p>
+                        <p class="id-p">MAIL:student@aaa.com<br>PASS:2023online</p>
                         <div class="white-box">
                             <i class="material-icons-outlined"> mouse</i>
                             <p> 時間割をクリック</p>

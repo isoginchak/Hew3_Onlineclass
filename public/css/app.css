@@ -10971,3 +10971,6 @@ a.text-dark:focus {
   display: flex;
   margin: 0 auto;
 }
+.td{
+  text-align: center;
+}

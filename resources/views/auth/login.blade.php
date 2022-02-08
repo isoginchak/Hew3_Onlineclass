@@ -9,6 +9,8 @@
                 <div class="card-header">{{ __('ログイン') }}</div>
 
                 <div class="card-body">
+                    <p class="td">教師アカウント:mail:teacher@aaa.com pass:2023online<br>生徒アカウント:mail:student@aaa.com pass:2023online
+                    </p>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
