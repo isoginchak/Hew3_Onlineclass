@@ -10,7 +10,7 @@
     <div class="question-wrap">
         <div class="question">
             <div class="q-name-content">
-                <p>科目名: {{ $question->class_name}} 送信者:{{ $question->family_name}} {{ $question->first_name}}</p>
+                <p>科目名: {{ $question->class_name}}<br> 送信者:{{ $question->family_name}} {{ $question->first_name}}</p>
             </div>
             <div class="q-wrap">
                 <p class="q-logo">Q</p>

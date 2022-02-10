@@ -4,4 +4,5 @@
 @section('content-title','お知らせ')
 
 @section('content')
+
 @endsection

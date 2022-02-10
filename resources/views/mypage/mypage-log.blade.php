@@ -4,4 +4,5 @@
 @section('content-title','出席ログ')
 
 @section('content')
+
 @endsection

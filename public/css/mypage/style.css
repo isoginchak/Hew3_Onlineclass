@@ -365,3 +365,7 @@ td a:hover {
     font-size: 14px;
     padding-top: 5px;
 }
+
+.q-name-content{
+    padding-left: 5px;
+}
