@@ -244,7 +244,7 @@ td a:hover {
 
 }
 
-.questions-wrap {
+.questions-wrap, .newses-wrap {
     z-index: 2;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     width: 80vw;
@@ -254,9 +254,7 @@ td a:hover {
     padding-top: 20px;
 }
 
-
-.question-wrap {
-
+.question-wrap, .news-wrap {
     width: 78vw;
     margin: 10px auto 0 auto;
 }
@@ -321,7 +319,7 @@ td a:hover {
 
 }
 
-.question-submit {
+.question-submit, .news-submit {
     cursor: pointer;
     width: 80px;
     padding: 5px;
@@ -348,7 +346,8 @@ td a:hover {
     padding-bottom: 10px;
 }
 
-.question-form:focus {
+.question-form:focus, .news-form-title:focus, textarea:focus,
+#news-select:focus, #news-select:checked {
     outline: none;
     border: 2px solid rgb(161, 169, 177);
 }
@@ -356,6 +355,11 @@ td a:hover {
 .quesrion-hr {
     border: #DDD solid 1px;
     margin: 40px 0;
+}
+
+.news-hr {
+    border: #DDD solid 1px;
+    margin: 15px 0px 20px 0px;
 }
 
 .question-date {
@@ -366,6 +370,122 @@ td a:hover {
     padding-top: 5px;
 }
 
-.q-name-content{
+.q-name-content {
     padding-left: 5px;
+}
+
+#news-select {
+    border-radius: 10px;
+    width: 20%;
+    height: 35px;
+    border: 1px solid #CED4DA;
+    box-sizing: border-box;
+    color: #495057;
+    padding-left: 10px;
+}
+
+.news-form {
+    width: 100%;
+    margin: 0 auto;
+}
+
+#news-select option {
+    color: #495057;
+}
+
+.news-textarea {
+    margin-top: 15px;
+
+}
+
+.texxtarea {
+    border: 1px solid #CED4DA;
+    border-radius: 10px;
+    width: 98%;
+    height: 100px;
+    vertical-align: top;
+    padding: 10px;
+}
+
+.news-form-title {
+    border: 1px solid #CED4DA;
+    border-radius: 10px;
+    height: 35px;
+    width: 30%;
+    box-sizing: border-box;
+    padding-left: 10px;
+
+}
+
+.news-wrap .submit {
+    margin-right: .5%;
+}
+
+
+/* アコーディオン全体 */
+.accordion {
+    /* padding-top: 15px; */
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* アコーディオン */
+.accordion__item {
+    border: 1px solid #ddd;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+/* アコーディオンのタイトル */
+.accordion__title {
+    position: relative;
+    padding: 15px 60px 15px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #495057;
+}
+
+/* (+)アイコン */
+.accordion__title::before,
+.accordion__title::after {
+    content: "";
+    position: absolute;
+    right: 20px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    background-color: #5CA0E8;
+    width: 20px;
+    height: 4px;
+    transition: all 0.3s;
+}
+
+.accordion__title::after {
+    transform: rotate(90deg);
+}
+
+/* アコーディオンのコンテンツ */
+.accordion__content {
+    padding: 0 20px 15px 20px;
+    display: none;
+    cursor: pointer;
+    color: #212121;
+}
+
+.accordion__content.is-open {
+    display: block;
+}
+
+/* アコーディオン展開時の(-)アイコン */
+.accordion__item.is-active .accordion__title::before {
+    transform: rotate(180deg);
+}
+
+.accordion__item.is-active .accordion__title::after {
+    transform: rotate(180deg);
+    opacity: 0;
+}
+
+.news-date {
+    padding-right: 30px;
 }

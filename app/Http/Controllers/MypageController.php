@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\NewsData;
 
 class MypageController extends Controller
 {
@@ -20,9 +21,21 @@ class MypageController extends Controller
             ->get();
         return view('mypage.mypage-timetable', ['user' => $user], ['classes' => $classes]);
     }
+
     public function news()
     {
-        return view('mypage.mypage-news');
+        $user = Auth::user();
+        $id =   Auth::id();
+
+        $newses = NewsData::join('participation', 'newses.address_class_id', '=', 'participation.class_id')
+        ->leftjoin('users', 'newses.user_id', '=', 'users.id')
+        ->leftjoin('classes', 'newses.address_class_id', '=', 'classes.id')
+        ->where('participation.user_id', $id)
+        ->select('newses.id as newses_id','classes.class_name','news_title','news_content','newses.created_at as created_at')
+        ->latest()
+        ->get();
+
+        return view('mypage.mypage-news',['newses' => $newses]);
     }
     public function question()
     {
@@ -38,6 +51,8 @@ class MypageController extends Controller
         ->select('questions.id as question_id','classes.class_name','users.family_name','users.first_name','question','solve','answer','questions.created_at as created_at')
         ->latest()
         ->get();
+
+       
 
         return view('mypage.mypage-question',['questions' => $questions]);
     }

@@ -27,7 +27,7 @@
                 <div class="a-wrap" id="form-{{$question->question_id}}">
                     <p class="a-logo">！</p>
 
-                    <input name="answer " type="textarea" class="question-form" placeholder="回答を入力してください">
+                    <input name="answer " type="text" class="question-form" placeholder="回答を入力してください">
                 </div>
                 <div class="submit">
                     <input type="submit" class="question-submit" onclick="formPut( {{ $question -> question_id }} );">
