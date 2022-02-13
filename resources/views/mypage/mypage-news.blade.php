@@ -7,54 +7,49 @@
 <div class="newses-wrap">
     <div class="news-wrap">
         @if(Auth::user()->position===1)
-        <form action="" class="news-form">
-            <input type="text" placeholder="タイトル" class="news-form-title">
+        <div class="news-form">
+            <input type="text" placeholder="タイトル" class="news-form-title" id="news-title">
             <select name="address" id="news-select">
                 <option value="">宛先を選択してください</option>
-                <!-- foreachでぐるぐる-->
-                <option value="">Dog</option>
-                <!-- foreachでぐるぐる-->
+                @foreach ( $news_classes as $class )
+                <option value="{{ $class -> class_id  }}">{{ $class -> class_name  }}</option>
+                @endforeach
 
             </select>
             <div class="news-textarea">
 
-                <textarea class="texxtarea" rows="4" placeholder="本文を入力してください"></textarea>
+                <textarea class="texxtarea" id="news-content" rows="4" placeholder="本文を入力してください"></textarea>
 
             </div>
             <div class="submit">
-                <input type="submit" class="news-submit">
+                <button class="news-submit" onClick="newsPost();">送信</button>
             </div>
-        </form>
+        </div>
         <hr class="news-hr">
         @endif
 
 
         <dl class="accordion js-accordion">
             @foreach ( $newses as $news )
-
-
-            <!-- foreachでぐるぐる-->
             <div class="accordion__item js-accordion-trigger">
                 <dt class="accordion__title"><span class="news-date">{{ $news -> created_at->format('Y/m/d')  }}</span>&#12298{{ $news -> class_name  }}&#12299 {{ $news -> news_title  }}</dt>
                 <dd class="accordion__content">{{ $news -> news_content  }}</dd>
             </div>
-            <!-- foreachでぐるぐる-->
+
             @endforeach
 
         </dl>
 
-
-
-
-
     </div>
-
-
 
 </div>
 
 @endsection
 
 @section('script')
-<script src="{{ asset('js/news.js') }}"></script>
+<script>
+    const userId = '{{Auth::user()->id}}';
+</script>
+<script src="{{ asset('js/accordion.js') }}"></script>
+<script src="{{ asset('js/newsrest.js') }}"></script>
 @endsection

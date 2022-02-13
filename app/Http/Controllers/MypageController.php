@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\NewsData;
+use App\Models\NewsRestData;
 
 class MypageController extends Controller
 {
@@ -27,34 +27,40 @@ class MypageController extends Controller
         $user = Auth::user();
         $id =   Auth::id();
 
-        $newses = NewsData::join('participation', 'newses.address_class_id', '=', 'participation.class_id')
-        ->leftjoin('users', 'newses.user_id', '=', 'users.id')
-        ->leftjoin('classes', 'newses.address_class_id', '=', 'classes.id')
-        ->where('participation.user_id', $id)
-        ->select('newses.id as newses_id','classes.class_name','news_title','news_content','newses.created_at as created_at')
-        ->latest()
-        ->get();
+        $newses = NewsRestData::join('participation', 'newses.address_class_id', '=', 'participation.class_id')
+            ->leftjoin('users', 'newses.user_id', '=', 'users.id')
+            ->leftjoin('classes', 'newses.address_class_id', '=', 'classes.id')
+            ->where('participation.user_id', $id)
+            ->select('newses.id as newses_id', 'classes.class_name', 'news_title', 'news_content', 'newses.created_at as created_at')
+            ->latest()
+            ->get();
 
-        return view('mypage.mypage-news',['newses' => $newses]);
+        $news_classes = DB::table('users')
+            ->join('participation', 'users.id', '=', 'participation.user_id')
+            ->join('classes', 'participation.class_id', '=', 'classes.id')
+            ->where('participation.user_id', $id)
+            ->select('classes.class_name as class_name','classes.id as class_id')
+            ->get();
+    
+        return view('mypage.mypage-news', ['newses' => $newses],['news_classes' => $news_classes]);
+
     }
+
     public function question()
     {
         $user = Auth::user();
         $id =   Auth::id();
 
-       
         $questions = DB::table('questions')
-        ->join('participation', 'questions.class_id', '=', 'participation.class_id')
-        ->leftjoin('users', 'questions.user_id', '=', 'users.id')
-        ->leftjoin('classes', 'questions.class_id', '=', 'classes.id')
-        ->where('participation.user_id', $id)
-        ->select('questions.id as question_id','classes.class_name','users.family_name','users.first_name','question','solve','answer','questions.created_at as created_at')
-        ->latest()
-        ->get();
+            ->join('participation', 'questions.class_id', '=', 'participation.class_id')
+            ->leftjoin('users', 'questions.user_id', '=', 'users.id')
+            ->leftjoin('classes', 'questions.class_id', '=', 'classes.id')
+            ->where('participation.user_id', $id)
+            ->select('questions.id as question_id', 'classes.class_name', 'users.family_name', 'users.first_name', 'question', 'solve', 'answer', 'questions.created_at as created_at')
+            ->latest()
+            ->get();
 
-       
-
-        return view('mypage.mypage-question',['questions' => $questions]);
+        return view('mypage.mypage-question', ['questions' => $questions]);
     }
     public function log()
     {

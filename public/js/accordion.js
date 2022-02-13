@@ -1,8 +1,3 @@
-/* =================================================== */
-// slideUp, slideDown, slideToggle関数を定義
-/* =================================================== */
-
-// 要素をスライドしながら非表示にする関数(jQueryのslideUpと同じ)
 const slideUp = (el, duration = 300) => {
     el.style.height = el.offsetHeight + "px";
     el.offsetHeight;
@@ -100,3 +95,6 @@ const slideUp = (el, duration = 300) => {
       });
     });
   });
+
+
+  

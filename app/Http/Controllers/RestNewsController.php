@@ -1,12 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\QuestionRestData;
+use App\Models\NewsRestData;
 use Illuminate\Http\Request;
-use Symfony\Component\Console\Question\Question;
-use Illuminate\Support\Facades\DB;
 
-class RestQuestionController extends Controller
+class RestNewsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,16 +34,14 @@ class RestQuestionController extends Controller
      */
     public function store(Request $request)
     {
-       
-        $question = new QuestionRestData;
-        $question->user_id = $request->user_id;
-        $question->question = $request->question;
-        $question->share = $request->share;
-        $class_id = DB::table('classes')->where('hash',$request->class_id)->select('id')->get();
-        $question->class_id = $class_id[0]->id;
-        $question->save();
+        $news = new NewsRestData;
+        $news->user_id = $request->user_id;
+        $news->address_class_id = $request-> address_class_id;
+        $news->news_title = $request->news_title;
+        $news->news_content = $request->news_content;
+        $news->save();
 
-        return response($question, 200) -> header('Content-Type','application/json');
+        return response($news, 200) -> header('Content-Type','application/json');
 
     }
 
