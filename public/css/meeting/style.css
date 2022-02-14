@@ -43,32 +43,65 @@ body {
 
 #js-local-stream {
     margin: 0 auto;
+    /* width: 80vw;
+    height: 91.5vh; */
+    width: auto;
+    height: 100%;
+    background-color: #333;
+
+
+}
+
+.video-wrap {
+    width: 80vw;
+    height: 91.5vh;
+
+}
+
+.big-video {
     width: 80vw;
     height: 91.5vh;
     background-color: #333;
-
+    text-align: center;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.attendance-list{
+
+.small-video {
+    position: absolute;
+    background-color: #333;
+    width: 18%;
+    height: 22%;
+    z-index: 3;
+    bottom: 8vh;
+    margin: 0 0px 15px 15px;
+    text-align: center;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    display: none;
+}
+
+.attendance-list {
     width: 300px;
     margin: 0 auto;
 }
-.attendance{
+
+.attendance {
     display: flex;
     align-self: center;
 }
-.attendance p{
+
+.attendance p {
     width: 60%;
 
 }
 
-.size2{
-  margin-top: 15px;
-  margin-left: 20px;
+.size2 {
+    margin-top: 15px;
+    margin-left: 20px;
 }
 
 
-#video-error{
+#video-error {
     display: none;
     font-size: 22px;
     color: #c85000;
@@ -88,12 +121,15 @@ body {
 
 .remote-streams {
     height: 60vh;
+    width: 80vw;
     position: absolute;
     top: 0px;
 }
 
 .remote-streams video {
     height: 20%;
+    width: 12%;
+    background-color: #333;
 
 }
 
@@ -196,8 +232,7 @@ body {
     margin-right: 10px;
     font-size: 16px;
     color: #0078c8;
-    font-weight:bold
-    
+    font-weight: bold
 }
 
 .switch-label {
@@ -325,7 +360,7 @@ body {
     overflow-wrap: break-all;
 }
 
-.message-time{
+.message-time {
     width: 18vw;
     font-size: 12px;
     text-align: right;
@@ -336,13 +371,13 @@ body {
 ::-webkit-scrollbar {
     width: 7px;
     background: #fafafa;
-  }
-
-::-webkit-scrollbar-thumb {
-  background: #79C3FF;
-  border-radius: 5px;
 }
 
-.space{
+::-webkit-scrollbar-thumb {
+    background: #79C3FF;
+    border-radius: 5px;
+}
+
+.space {
     padding-bottom: 10px;
 }

@@ -24,6 +24,8 @@ const secondsShow = document.getElementById('seconds');
 const videoElem = document.getElementById('js-local-stream');
 const faceCascadeFile = 'xml\\haarcascade_frontalface_default.xml';
 
+
+
 //ロード
 function onCvLoaded() {
     console.log('on OpenCV.js Loaded', cv);

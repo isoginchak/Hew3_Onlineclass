@@ -2,7 +2,7 @@ let usersJsonData;
 
 //ルームID取得
 let meetingId = location.search;
-meetingId=meetingId.replace("?meetingid=", "");
+meetingId = meetingId.replace('?meetingid=', '');
 
 //PeeriD作成
 const stringSessionId = ('0000000000000000' + sessionId).slice(-16);
@@ -45,16 +45,22 @@ window.addEventListener('DOMContentLoaded', async function () {
         const volumeIcon = document.getElementById('volume-i');
         const videoErr = document.getElementById('video-error');
         const memberIcon = document.getElementById('member-show');
+        const bigScreen = document.getElementsByClassName('big-video');
+        const smallScreen = document.getElementsByClassName('small-video');
+        const teacherJson = usersJsonData.find((u) => u.position === 1);
+        const teacherId = teacherJson.id;
+
+
         let key = false;
         let localStream;
         let faceNone = [];
         let teacher;
 
+
         if (sessionPositon == 0) {
             //顔認識起動
             onReady();
         }
-
 
         //webカメラ・ビデオの取得
         try {
@@ -62,10 +68,10 @@ window.addEventListener('DOMContentLoaded', async function () {
             localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
         } catch (err) {
             //マイクのみ
-            console.log("エラー");
+            console.log('エラー');
             localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
             videoToggle = -1;
-            videoIcon.innerHTML = "videocam_off";
+            videoIcon.innerHTML = 'videocam_off';
             videoErr.style.display = 'inline';
         }
 
@@ -75,13 +81,29 @@ window.addEventListener('DOMContentLoaded', async function () {
         localVideo.playsInline = true;
         await localVideo.play().catch(console.error);
 
+        const timestamp = Math.floor(Date.now() / 1000);
+
+        //クレデンシャル
+        const credential = {
+            peerId: stringSessionId,
+            timestamp: timestamp,
+            ttl: 3900,
+            authToken: calculateAuthToken(stringSessionId, timestamp)
+        };
+
+        //hash化
+        function calculateAuthToken(peerId, timestamp) {
+            const hash = CryptoJS.HmacSHA256(`${timestamp}:3900:${peerId}`, window.__SKYWAY_KEY__);
+            return CryptoJS.enc.Base64.stringify(hash);
+        }
+
         // 自分のpeer作成
         const peer = (window.peer = new Peer(stringSessionId, {
             key: window.__SKYWAY_KEY__,
-            debug: 3,
+            debug: 1,
+            credential: credential,
+
         }));
-
-
 
 
         //初期設定は音声ミュート
@@ -96,7 +118,7 @@ window.addEventListener('DOMContentLoaded', async function () {
             if (videoToggle == 0) { //ビデオをつける
                 localStream.getVideoTracks().forEach((track) => (track.enabled = true));
                 videoToggle = 1;
-                videoIcon.innerHTML = "videocam";
+                videoIcon.innerHTML = 'videocam';
 
 
             } else { //ビデオを消す
@@ -104,7 +126,7 @@ window.addEventListener('DOMContentLoaded', async function () {
                 localStream.getVideoTracks().forEach((track) => (track.enabled = false));
                 videoToggle = 0;
                 isStreaming = false;
-                videoIcon.innerHTML = "videocam_off";
+                videoIcon.innerHTML = 'videocam_off';
             }
         }
 
@@ -115,24 +137,24 @@ window.addEventListener('DOMContentLoaded', async function () {
             if (audioToggle == 0) { //音声をつける
                 localStream.getAudioTracks().forEach((track) => (track.enabled = true));
                 audioToggle = 1;
-                volumeIcon.innerHTML = "volume_up";
+                volumeIcon.innerHTML = 'volume_up';
 
             } else {//音声を消す
                 localStream.getAudioTracks().forEach((track) => (track.enabled = false));
                 audioToggle = 0;
-                volumeIcon.innerHTML = "volume_off";
-
+                volumeIcon.innerHTML = 'volume_off';
             }
         }
-        // Register join handler
+        //入室
         function joinRoom() {
 
             if (sessionPositon == 0) {
                 //顔認識起動
                 onReady();
+
             }
 
-            console.log("join");
+            console.log('join');
             if (!peer.open) return;
 
             //roomの選択
@@ -143,6 +165,10 @@ window.addEventListener('DOMContentLoaded', async function () {
 
             room.once('open', () => {
                 messages.innerHTML += "入室しました<br class='space'>";
+                if (sessionPositon == 0) {
+                    //教師が先にいるか確認
+                    teacherExist();
+                }
             });
 
 
@@ -150,16 +176,19 @@ window.addEventListener('DOMContentLoaded', async function () {
                 const intruder = Number(`${peerId}`);
                 //ID検索
                 const result = usersJsonData.find((u) => u.id === intruder);
-                messages.innerHTML += result.family_name + " " + result.first_name + 'さんが入室<br class="space">';
+                messages.innerHTML += result.family_name + ' ' + result.first_name + 'さんが入室<br class="space">';
+                //入室者が先生なら
+                if (result.id == teacherId) {
+                    teacherIn();
+                }
 
             });
 
-            // 他のユーザのストリームを受信した時
+            // 他のユーザのビデオを受信した時
             room.on('stream', async stream => {
                 const newVideo = document.createElement('video');
                 newVideo.srcObject = stream;
                 newVideo.playsInline = true;
-                // mark peerId to find it later at peerLeave event
                 newVideo.setAttribute('data-peer-id', stream.peerId);
                 remoteVideos.append(newVideo);
                 await newVideo.play().catch(console.error);
@@ -171,29 +200,29 @@ window.addEventListener('DOMContentLoaded', async function () {
                 data,
                 src
             }) => {
-                if (`${data}` == "skywayhideen0") {
+                if (`${data}` == 'skywayhideen0') {
                     //顔が検出されない
                     if (!faceNone.includes(Number(`${src}`))) {
                         faceNone.push(Number(`${src}`));
                     }
 
                 }
-                else if (`${data}` == "skywayhideen1") {
+                else if (`${data}` == 'skywayhideen1') {
                     //顔が検出される
                     faceNone = faceNone.filter(function (x) { return x != Number(`${src}`) });
                 }
-                else if (`${data}` == "skywayhideen9") {
+                else if (`${data}` == 'skywayhideen9') {
                     teacher = Number(`${src}`);
                 }
                 else {
                     const now = new Date();
                     const hour = now.getHours();
-                    const min = ("0" + now.getMinutes()).slice(-2);
+                    const min = ('0' + now.getMinutes()).slice(-2);
                     const sender = Number(`${src}`);
                     // //ID検索
                     const result = usersJsonData.find((u) => u.id === sender);
                     // 送信されたメッセージと送信者を表示
-                    messages.innerHTML += "<span class='sender-box'>" + result.family_name + " " + result.first_name + "</span><br><div class='sender-message-box'>" + `${data}` + "</div><br><div class='message-time'>" + `${hour}` + ":" + `${min}` + "</div>";
+                    messages.innerHTML += "<span class='sender-box'>" + result.family_name + ' ' + result.first_name + "</span><br><div class='sender-message-box'>" + `${data}` + "</div><br><div class='message-time'>" + `${hour}` + ":" + `${min}` + "</div>";
                 }
             });
 
@@ -205,13 +234,14 @@ window.addEventListener('DOMContentLoaded', async function () {
                 remoteVideo.srcObject.getTracks().forEach(track => track.stop());
                 remoteVideo.srcObject = null;
                 remoteVideo.remove();
-
                 const exiters = Number(`${peerId}`);
                 //ID検索
                 const result = usersJsonData.find((u) => u.id === exiters);
+                messages.innerHTML += result.family_name + ' ' + result.first_name + 'さんが退出<br  class="space">';
 
-                messages.innerHTML += result.family_name + " " + result.first_name + 'さんが退出<br  class="space">';
-
+                if (result.id == teacherId) {
+                    teacherLeave();
+                }
             });
 
             // 自身の退出
@@ -223,7 +253,7 @@ window.addEventListener('DOMContentLoaded', async function () {
                     remoteVideo.srcObject.getTracks().forEach(track => track.stop());
                     remoteVideo.srcObject = null;
                     remoteVideo.remove();
-                    window.location.href = "/mypage";
+                    window.location.href = '/mypage';
 
                 });
             });
@@ -236,16 +266,14 @@ window.addEventListener('DOMContentLoaded', async function () {
             //メッセージの送信
             function onClickSend() {
                 //空文字は送信できない
-                if (localText.value == "") return;
+                if (localText.value == '') return;
                 const escapeText = escapeHtml(localText.value);
-
                 const now = new Date();
                 const hour = now.getHours();
-                const min = ("0" + now.getMinutes()).slice(-2);
+                const min = ('0' + now.getMinutes()).slice(-2);
                 // webscketを介してメッセージの送信
                 room.send(escapeText);
-                messages.innerHTML += "<span class='sender-box'>" + sessionFamilyName + " " + sessionFirstName + "</span><br><div class='my-message-box '>" + escapeText + "</div><br><div class='message-time'>" + `${hour}` + ":" + `${min}` + "</div>";
-
+                messages.innerHTML += "<span class='sender-box'>" + sessionFamilyName + ' ' + sessionFirstName + "</span><br><div class='my-message-box '>" + escapeText + "</div><br><div class='message-time'>" + `${hour}` + ":" + `${min}` + "</div>";
                 localText.value = '';
             }
 
@@ -265,7 +293,6 @@ window.addEventListener('DOMContentLoaded', async function () {
                     }[match]
                 });
             }
-
 
             //画面共有
             shareButton.addEventListener('click', shareBtnClick);
@@ -311,15 +338,15 @@ window.addEventListener('DOMContentLoaded', async function () {
             function memberBtnClick() {
                 let members = [];
 
-                if (sessionPositon == "1") {
-                    members.push('<div class=attendance><p>' + sessionFamilyName + " " + sessionFirstName + '</p><i class="material-icons-outlined icon-size size2" id="face">badge</i></div>');
+                if (sessionPositon == '1') {
+                    members.push('<div class=attendance><p>' + sessionFamilyName + ' ' + sessionFirstName + '</p><i class="material-icons-outlined icon-size size2" id="face">badge</i></div>');
                 }
                 else {
                     if (faces.size() === 0) {
-                        members.push('<div class=attendance><p>' + sessionFamilyName + " " + sessionFirstName + '</p> <i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
+                        members.push('<div class=attendance><p>' + sessionFamilyName + ' ' + sessionFirstName + '</p> <i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
                     }
                     else {
-                        members.push('<div class=attendance><p>' + sessionFamilyName + " " + sessionFirstName + '</p><i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
+                        members.push('<div class=attendance><p>' + sessionFamilyName + ' ' + sessionFirstName + '</p><i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
                     }
                 }
 
@@ -328,14 +355,14 @@ window.addEventListener('DOMContentLoaded', async function () {
                     // //ID検索
                     let result = usersJsonData.find((u) => u.id === member);
                     if (teacher == room.members[i]) {
-                        members.push('<div class=attendance><p>' + result.family_name + " " + result.first_name + '</p><i class="material-icons-outlined icon-size size2" id="face">badge</i></div>');
+                        members.push('<div class=attendance><p>' + result.family_name + ' ' + result.first_name + '</p><i class="material-icons-outlined icon-size size2" id="face">badge</i></div>');
                     }
                     else {
                         if (faceNone.includes(member)) {
-                            members.push('<div class=attendance><p>' + result.family_name + " " + result.first_name + ' </p><i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
+                            members.push('<div class=attendance><p>' + result.family_name + ' ' + result.first_name + ' </p><i class="material-icons-outlined icon-size size2" id="face" style="color:#c85000">face_retouching_off</i></div>');
                         }
                         else {
-                            members.push('<div class=attendance><p>' + result.family_name + " " + result.first_name + '</p> <i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
+                            members.push('<div class=attendance><p>' + result.family_name + ' ' + result.first_name + '</p> <i class="material-icons-outlined icon-size size2" id="face">face</i></div>');
                         }
                     }
 
@@ -345,37 +372,71 @@ window.addEventListener('DOMContentLoaded', async function () {
                 text += membersText;
                 text += '</div>';
                 swal.fire({
-                    title: "出席者一覧",
+                    title: '出席者一覧',
                     html: text,
                     confirmButtonColor: '#5CA0E8',
                 })
             }
-            sendFaceDetection() ;
+            sendFaceDetection();
 
             //5秒おきに顔取得
             setInterval(sendFaceDetection, 5000);
             function sendFaceDetection() {
                 if (sessionPositon == 1) {
-                    room.send("skywayhideen9");
+                    room.send('skywayhideen9');
                 }
                 else {
                     if (faces.size() == 0) {
-                        room.send("skywayhideen0");
+                        room.send('skywayhideen0');
                     }
                     else {
-                        room.send("skywayhideen1");
+                        room.send('skywayhideen1');
                     }
                 }
+            }
+            //教師がいるか
+            function teacherExist() {
+                for (i = 0; i < room.members.length; i++) {
+                    let member = Number(room.members[i]);
+                    if (teacherId == member) {
+                        teacherIn();
+                    }
+                }
+            }
+
+            //自分の画像の大きさを大きく
+            function teacherLeave() {
+                // var myVideoTag = localVideo.cloneNode(true);
+                // localVideo.remove();
+                // bigScreen[0].appendChild(myVideoTag);
+                // smallScreen[0].style.display = 'none';
+                // // localStream = navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+                // // localVideo.srcObject = localStream;
+                // localVideo.play();
+
+
+            }
+            //自分び画像の大きさを小さく
+            function teacherIn() {
+                // smallScreen[0].style.display = 'inline';
+                // var myVideoTag = localVideo.cloneNode(true);
+                // localVideo.remove();
+                // smallScreen[0].appendChild(myVideoTag);
+                // // localStream = navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+                // // localVideo.srcObject = localStream;
+                // localVideo.play()
+
 
             }
 
 
-        };
 
+        };
 
         //peerを受け取ったら作動する
         const receivepeer = peer.on('open', () => {
             joinRoom();
+
         });
 
         //リロードした場合再入室
@@ -386,7 +447,6 @@ window.addEventListener('DOMContentLoaded', async function () {
 
         });
 
-        //人のビデオを押したら拡大 自分のビデオ縮小を作りたい
         peer.on('error', console.error);
 
     })();
