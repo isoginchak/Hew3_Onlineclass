@@ -28,6 +28,8 @@ window.addEventListener('DOMContentLoaded', async function () {
     let videoToggle = 1;
     let audioToggle = 0;
     let roomId = meetingId;
+    let videoSizeToggle = 1; //0は小さい1は大きい
+
 
     (async function main() {
         const localVideo = document.getElementById('js-local-stream');
@@ -45,6 +47,8 @@ window.addEventListener('DOMContentLoaded', async function () {
         const volumeIcon = document.getElementById('volume-i');
         const videoErr = document.getElementById('video-error');
         const memberIcon = document.getElementById('member-show');
+        const myVideo = document.getElementById('myvideo-wrap');
+        const videoWrap = document.getElementById('video-wrap');
         const bigScreen = document.getElementsByClassName('big-video');
         const smallScreen = document.getElementsByClassName('small-video');
         const teacherJson = usersJsonData.find((u) => u.position === 1);
@@ -81,30 +85,7 @@ window.addEventListener('DOMContentLoaded', async function () {
         localVideo.playsInline = true;
         await localVideo.play().catch(console.error);
 
-        const timestamp = Math.floor(Date.now() / 1000);
-
-        //クレデンシャル
-        const credential = {
-            peerId: stringSessionId,
-            timestamp: timestamp,
-            ttl: 3900,
-            authToken: calculateAuthToken(stringSessionId, timestamp)
-        };
-
-        //hash化
-        function calculateAuthToken(peerId, timestamp) {
-            const hash = CryptoJS.HmacSHA256(`${timestamp}:3900:${peerId}`, window.__SKYWAY_KEY__);
-            return CryptoJS.enc.Base64.stringify(hash);
-        }
-
-        // 自分のpeer作成
-        const peer = (window.peer = new Peer(stringSessionId, {
-            key: window.__SKYWAY_KEY__,
-            debug: 1,
-            credential: credential,
-
-        }));
-
+        const peer = peerCreate();
 
         //初期設定は音声ミュート
         localStream.getAudioTracks().forEach((track) => (track.enabled = false));
@@ -177,10 +158,7 @@ window.addEventListener('DOMContentLoaded', async function () {
                 //ID検索
                 const result = usersJsonData.find((u) => u.id === intruder);
                 messages.innerHTML += result.family_name + ' ' + result.first_name + 'さんが入室<br class="space">';
-                //入室者が先生なら
-                if (result.id == teacherId) {
-                    teacherIn();
-                }
+
 
             });
 
@@ -190,8 +168,13 @@ window.addEventListener('DOMContentLoaded', async function () {
                 newVideo.srcObject = stream;
                 newVideo.playsInline = true;
                 newVideo.setAttribute('data-peer-id', stream.peerId);
+                newVideo.setAttribute('id', 'remote-id' + Number(stream.peerId));
                 remoteVideos.append(newVideo);
                 await newVideo.play().catch(console.error);
+                //入室者が先生なら
+                if (Number(stream.peerId) == teacherId) {
+                    teacherIn();
+                }
             });
 
 
@@ -404,31 +387,43 @@ window.addEventListener('DOMContentLoaded', async function () {
                 }
             }
 
-            //自分の画像の大きさを大きく
+            //教師がいない
             function teacherLeave() {
-                // var myVideoTag = localVideo.cloneNode(true);
-                // localVideo.remove();
-                // bigScreen[0].appendChild(myVideoTag);
-                // smallScreen[0].style.display = 'none';
-                // // localStream = navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-                // // localVideo.srcObject = localStream;
-                // localVideo.play();
-
+                //div消す
+                bigScreen[0].firstChild.srcObject = null;
+                bigScreen[0].remove();
+                //自分の画像を大きく
+                myVideo.className = 'big-video';
+                myVideo.style.display = 'block';
+                videoSizeToggle = 1;
 
             }
-            //自分び画像の大きさを小さく
+            //教師がいる
             function teacherIn() {
-                // smallScreen[0].style.display = 'inline';
-                // var myVideoTag = localVideo.cloneNode(true);
-                // localVideo.remove();
-                // smallScreen[0].appendChild(myVideoTag);
-                // // localStream = navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-                // // localVideo.srcObject = localStream;
-                // localVideo.play()
+                if (videoSizeToggle == 1) {
+                    //自分の画像を小さく
+                    myVideo.className = 'small-video';
+                    smallScreen[0].style.display = 'inline';
+
+                    //教師のビデオを大きくする
+                    let videoDiv = document.createElement('div');
+                    videoDiv.className = 'big-video';
+                    videoWrap.appendChild(videoDiv);
+                    const newVideo = document.createElement('video');
+                    newVideo.srcObject = stream;
+                    newVideo.playsInline = true;
+                    newVideo.setAttribute('data-peer-id', stream.peerId);
+                    newVideo.setAttribute('id', 'remote-Bid' + teacherId);
+
+                    bigScreen[0].append(newVideo);
+                    newVideo.play().catch(console.error);
+                    videoSizeToggle = 0;
+                    const smallTeacherVideo = document.getElementById('remote-id' + teacherId);
+
+                }
 
 
             }
-
 
 
         };
@@ -442,13 +437,42 @@ window.addEventListener('DOMContentLoaded', async function () {
         //リロードした場合再入室
         document.addEventListener('keydown', function (e) {
             if (e.ctrlKey) key = true;
-            if ((e.which || e.keyCode) == 116) receivepeer;
-            if ((e.which || e.keyCode) == 82 && key) receivepeer;
+            if ((e.which || e.keyCode) == 116) peerCreate();
+            if ((e.which || e.keyCode) == 82 && key) peerCreate();
 
         });
-
         peer.on('error', console.error);
+
+        function peerCreate() {
+            let timestamp = Math.floor(Date.now() / 1000);
+            //クレデンシャル
+            let credential = {
+                peerId: stringSessionId,
+                timestamp: timestamp,
+                ttl: 7200,
+                authToken: calculateAuthToken(stringSessionId, timestamp)
+            };
+
+            //hash化
+            function calculateAuthToken(peerId, timestamp) {
+                const hash = CryptoJS.HmacSHA256(`${timestamp}:7200:${peerId}`, window.__SKYWAY_KEY__);
+                return CryptoJS.enc.Base64.stringify(hash);
+            }
+
+            // 自分のpeer作成
+            let peer = (window.peer = new Peer(stringSessionId, {
+                key: window.__SKYWAY_KEY__,
+                debug: 3,
+                credential: credential,
+            }));
+            return peer;
+
+        }
 
     })();
 
+});
+
+window.addEventListener('unload', function (e) {
+    peerCreate();
 });

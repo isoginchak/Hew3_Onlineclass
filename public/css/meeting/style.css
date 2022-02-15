@@ -41,7 +41,7 @@ body {
     padding-left: 10px;
 }
 
-#js-local-stream {
+#js-local-stream ,.big-video video{
     margin: 0 auto;
     /* width: 80vw;
     height: 91.5vh; */

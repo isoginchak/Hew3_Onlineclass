@@ -2,10 +2,10 @@
 @section('content')
 <div class="room">
     <div class="mvideo">
-        <div class="video-wrap">
-        <div class="big-video"><video id="js-local-stream" muted="muted" autoplay playsinline></video></div>  
+        <div class="video-wrap" id="video-wrap">
+        <div class="big-video" id="myvideo-wrap"><video id="js-local-stream" muted="muted" autoplay playsinline></video></div>  
         </div>
-         <div class="small-video"></div>
+        
         <div class="set-up-bar">
             <div class="face">
                 <i class="material-icons-outlined icon-size size1" id="face">face</i>
