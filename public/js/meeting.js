@@ -79,7 +79,6 @@ window.addEventListener('DOMContentLoaded', async function () {
             videoErr.style.display = 'inline';
         }
 
-        // Render local stream
         localVideo.muted = true;
         localVideo.srcObject = localStream;
         localVideo.playsInline = true;
@@ -103,7 +102,6 @@ window.addEventListener('DOMContentLoaded', async function () {
 
 
             } else { //ビデオを消す
-
                 localStream.getVideoTracks().forEach((track) => (track.enabled = false));
                 videoToggle = 0;
                 isStreaming = false;
@@ -119,7 +117,6 @@ window.addEventListener('DOMContentLoaded', async function () {
                 localStream.getAudioTracks().forEach((track) => (track.enabled = true));
                 audioToggle = 1;
                 volumeIcon.innerHTML = 'volume_up';
-
             } else {//音声を消す
                 localStream.getAudioTracks().forEach((track) => (track.enabled = false));
                 audioToggle = 0;
@@ -146,10 +143,6 @@ window.addEventListener('DOMContentLoaded', async function () {
 
             room.once('open', () => {
                 messages.innerHTML += "入室しました<br class='space'>";
-                if (sessionPositon == 0) {
-                    //教師が先にいるか確認
-                    teacherExist();
-                }
             });
 
 
@@ -173,7 +166,7 @@ window.addEventListener('DOMContentLoaded', async function () {
                 await newVideo.play().catch(console.error);
                 //入室者が先生なら
                 if (Number(stream.peerId) == teacherId) {
-                    teacherIn();
+                    teacherIn(stream);
                 }
             });
 
@@ -281,7 +274,6 @@ window.addEventListener('DOMContentLoaded', async function () {
             shareButton.addEventListener('click', shareBtnClick);
 
             function shareBtnClick() {
-
                 //画面の取得
                 const shareStream = navigator.mediaDevices
                     .getDisplayMedia({
@@ -300,6 +292,7 @@ window.addEventListener('DOMContentLoaded', async function () {
                     //切り替え
                     room.replaceStream(sharingMediaStream);
                     localVideo.playsInline = true;
+                    localVideo.height = '100%';
                     localVideo.play().catch(console.error);
                     videoToggle = 0;
                     //共有停止
@@ -309,6 +302,7 @@ window.addEventListener('DOMContentLoaded', async function () {
                         room.replaceStream(localStream);
                         localStream.getVideoTracks().forEach((track) => (track.enabled = true));
                         localVideo.playsInline = true;
+                        localVideo.height = '100%';
                         localVideo.play().catch(console.error);
 
                     }
@@ -377,15 +371,6 @@ window.addEventListener('DOMContentLoaded', async function () {
                     }
                 }
             }
-            //教師がいるか
-            function teacherExist() {
-                for (i = 0; i < room.members.length; i++) {
-                    let member = Number(room.members[i]);
-                    if (teacherId == member) {
-                        teacherIn();
-                    }
-                }
-            }
 
             //教師がいない
             function teacherLeave() {
@@ -396,15 +381,14 @@ window.addEventListener('DOMContentLoaded', async function () {
                 myVideo.className = 'big-video';
                 myVideo.style.display = 'block';
                 videoSizeToggle = 1;
-
             }
+
             //教師がいる
-            function teacherIn() {
+            function teacherIn(stream) {
                 if (videoSizeToggle == 1) {
                     //自分の画像を小さく
                     myVideo.className = 'small-video';
                     smallScreen[0].style.display = 'inline';
-
                     //教師のビデオを大きくする
                     let videoDiv = document.createElement('div');
                     videoDiv.className = 'big-video';
@@ -414,18 +398,12 @@ window.addEventListener('DOMContentLoaded', async function () {
                     newVideo.playsInline = true;
                     newVideo.setAttribute('data-peer-id', stream.peerId);
                     newVideo.setAttribute('id', 'remote-Bid' + teacherId);
-
                     bigScreen[0].append(newVideo);
                     newVideo.play().catch(console.error);
                     videoSizeToggle = 0;
                     const smallTeacherVideo = document.getElementById('remote-id' + teacherId);
-
                 }
-
-
             }
-
-
         };
 
         //peerを受け取ったら作動する
@@ -437,9 +415,10 @@ window.addEventListener('DOMContentLoaded', async function () {
         //リロードした場合再入室
         document.addEventListener('keydown', function (e) {
             if (e.ctrlKey) key = true;
-            if ((e.which || e.keyCode) == 116) peerCreate();
-            if ((e.which || e.keyCode) == 82 && key) peerCreate();
-
+            // if ((e.which || e.keyCode) == 116) peerCreate();
+            // if ((e.which || e.keyCode) == 82 && key) peerCreate();
+            if ((e.which || e.keyCode) == 116) e.preventDefault();
+            if ((e.which || e.keyCode) == 82 && key) e.preventDefault();
         });
         peer.on('error', console.error);
 
@@ -466,7 +445,6 @@ window.addEventListener('DOMContentLoaded', async function () {
                 credential: credential,
             }));
             return peer;
-
         }
 
     })();

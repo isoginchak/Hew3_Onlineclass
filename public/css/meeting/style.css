@@ -147,14 +147,12 @@ body {
     position: fixed;
     display: flex;
     align-items: center;
-    /* justify-content: space-around; */
     top: 91.5vh;
     margin-top: .5vh;
     height: 8vh;
     width: 20vw;
     padding: 0 0px 0 10px;
     margin-bottom: 1vh;
-
 
 }
 
@@ -381,3 +379,4 @@ body {
 .space {
     padding-bottom: 10px;
 }
+
