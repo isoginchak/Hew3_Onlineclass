@@ -41,14 +41,13 @@ body {
     padding-left: 10px;
 }
 
-#js-local-stream ,.big-video video{
+.big-video video{
     margin: 0 auto;
-    /* width: 80vw;
-    height: 91.5vh; */
-    width: auto;
-    height: 100%;
+    width: 80vw;
+    height: 91.5vh;
+    /* width: auto;
+    height: 100%; */
     background-color: #333;
-
 
 }
 
@@ -64,6 +63,12 @@ body {
     background-color: #333;
     text-align: center;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.small-video video{
+    margin: 0 auto;
+    width: auto;
+    height: 100%;
+    background-color: #333;
 }
 
 

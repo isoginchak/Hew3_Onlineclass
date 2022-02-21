@@ -54,7 +54,6 @@ window.addEventListener('DOMContentLoaded', async function () {
         const teacherJson = usersJsonData.find((u) => u.position === 1);
         const teacherId = teacherJson.id;
 
-
         let key = false;
         let localStream;
         let faceNone = [];
@@ -104,6 +103,7 @@ window.addEventListener('DOMContentLoaded', async function () {
             } else { //ビデオを消す
                 localStream.getVideoTracks().forEach((track) => (track.enabled = false));
                 videoToggle = 0;
+
                 isStreaming = false;
                 videoIcon.innerHTML = 'videocam_off';
             }
@@ -151,8 +151,6 @@ window.addEventListener('DOMContentLoaded', async function () {
                 //ID検索
                 const result = usersJsonData.find((u) => u.id === intruder);
                 messages.innerHTML += result.family_name + ' ' + result.first_name + 'さんが入室<br class="space">';
-
-
             });
 
             // 他のユーザのビデオを受信した時
@@ -176,7 +174,23 @@ window.addEventListener('DOMContentLoaded', async function () {
                 data,
                 src
             }) => {
-                if (`${data}` == 'skywayhideen0') {
+                //離席通知を教師にする
+                if (`${data}`.slice(0, 11) == 'skywayalert') {
+                    if (sessionPositon == 1) {
+                        let sendId = Number(`${data}`.slice(11));
+                        let result = usersJsonData.find((u) => u.id === sendId);
+                        swal.fire({
+                            title: result.family_name + ' ' + result.first_name + 'さんが離席しました',
+                            icon: 'info',
+                            toast: true,
+                            position: 'top-end',   //画面右上 
+                            showConfirmButton: false,
+                            timer: 3000           //3秒経過後に閉じる
+                        });
+                    }
+
+                }
+                else if (`${data}` == 'skywayhideen0') {
                     //顔が検出されない
                     if (!faceNone.includes(Number(`${src}`))) {
                         faceNone.push(Number(`${src}`));
@@ -404,6 +418,37 @@ window.addEventListener('DOMContentLoaded', async function () {
                     const smallTeacherVideo = document.getElementById('remote-id' + teacherId);
                 }
             }
+            if (sessionPositon == 0) {
+                leavingToggle.addEventListener('click', leavingToggleClick);
+            }
+            function leavingToggleClick() {
+                if (leavingToggle.checked) {
+
+                    swal.fire({
+                        title: "離席内容を選択してください",
+                        input: "select",
+                        inputOptions: {
+                            '0': 'お手洗い',
+                            '1': '郵便受取り',
+                            '2': 'その他',
+                        },
+                        inputPlaceholder: '離席内容を選択',
+                        confirmButtonColor: '#5CA0E8',
+                        showCancelButton: true,
+                        reverseButtons: true,
+                        confirmButtonText: '送信',
+                        cancelButtonText: 'キャンセル',
+                        cancelButtonColor: '#9ca2a8',
+                    }).then(result => {
+                        room.send('skywayalert' + sessionId);
+                        if (!result.isConfirmed) {
+                            leavingToggle.checked = false;
+                        }
+                    })
+                }
+            }
+
+
         };
 
         //peerを受け取ったら作動する
@@ -415,8 +460,6 @@ window.addEventListener('DOMContentLoaded', async function () {
         //リロードした場合再入室
         document.addEventListener('keydown', function (e) {
             if (e.ctrlKey) key = true;
-            // if ((e.which || e.keyCode) == 116) peerCreate();
-            // if ((e.which || e.keyCode) == 82 && key) peerCreate();
             if ((e.which || e.keyCode) == 116) e.preventDefault();
             if ((e.which || e.keyCode) == 82 && key) e.preventDefault();
         });
@@ -446,6 +489,8 @@ window.addEventListener('DOMContentLoaded', async function () {
             }));
             return peer;
         }
+
+
 
     })();
 
