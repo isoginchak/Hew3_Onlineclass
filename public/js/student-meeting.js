@@ -52,9 +52,24 @@ function helpBtnClick() {
 
 }
 
+
 async function postQuestion(questionDataJSON) {
     try {
         const res = await axios.post(`/postquestion`, questionDataJSON, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log(res)
+
+    } catch (e) {
+        // console.log(e)
+    }
+}
+
+async function postJoinLog(joinDataJSON) {
+    try {
+        const res = await axios.post(`/postjoinlog`,joinDataJSON, {
             headers: {
                 'Content-Type': 'application/json',
             },

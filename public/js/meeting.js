@@ -141,6 +141,14 @@ window.addEventListener('DOMContentLoaded', async function () {
 
             room.once('open', () => {
                 messages.innerHTML += "入室しました<br class='space'>";
+                if (sessionPositon == 0) {
+                    //Ajax
+                    const joinData = { user_id: sessionId, class_id: meetingId};
+                    // JSON 形式への変換
+                    let joinDataJSON = JSON.stringify(joinData);
+                    postJoinLog(joinDataJSON);
+                   
+                }
             });
 
             room.on('peerJoin', peerId => {

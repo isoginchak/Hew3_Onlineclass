@@ -17,7 +17,6 @@ class CreateLogsTable extends Migration
             $table->increments('id')->unique();
             $table->integer('class_id')->nullable();
             $table->integer('user_id');
-            $table->dateTime('in_date');
             $table->dateTime('out_date')->nullable();
             $table->integer('noface_time')->nullable();
             $table->timestamps();
