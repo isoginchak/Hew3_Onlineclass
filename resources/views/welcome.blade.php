@@ -103,7 +103,7 @@
                     <div class="img-box">
                         <img src="/img/teacher2.png" alt="" class="howtoimg">
                         <p class="howto-p">教師アカウント</p>
-                        <p class="id-p">MAIL:teacher@aaa.com<br>PASS:2023online</p>
+                        <p class="id-p">MAIL:aaa@aaa.com<br>PASS:2023online</p>
                         <div class="white-box">
                             <i class="material-icons-outlined"> mouse</i>
                             <p> 時間割をクリック</p>
@@ -145,7 +145,7 @@
                     <div class="img-box">
                         <img src="/img/student.png" alt="" class="howtoimg">
                         <p class="howto-p">生徒アカウント</p>
-                        <p class="id-p">MAIL:student@aaa.com<br>PASS:2023online</p>
+                        <p class="id-p">MAIL:bbb@bbb.com<br>PASS:2023online</p>
                         <div class="white-box">
                             <i class="material-icons-outlined"> mouse</i>
                             <p> 時間割をクリック</p>

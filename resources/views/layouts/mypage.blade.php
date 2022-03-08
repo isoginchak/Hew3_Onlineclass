@@ -45,12 +45,12 @@
                 </a>
 
                 @if (Auth::user()->position===1)
-                <a href="/mypage-log">
+                <!-- <a href="/mypage-log">
                     <div class="menu">
                         <i class="material-icons-outlined icon-white">assessment</i>
                         <p>出席ログ</p>
                     </div>
-                </a>
+                </a> -->
                 @endif
             </div>
 

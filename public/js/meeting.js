@@ -103,7 +103,6 @@ window.addEventListener('DOMContentLoaded', async function () {
             } else { //ビデオを消す
                 localStream.getVideoTracks().forEach((track) => (track.enabled = false));
                 videoToggle = 0;
-
                 isStreaming = false;
                 videoIcon.innerHTML = 'videocam_off';
             }
@@ -129,7 +128,6 @@ window.addEventListener('DOMContentLoaded', async function () {
             if (sessionPositon == 0) {
                 //顔認識起動
                 onReady();
-
             }
 
             console.log('join');
@@ -144,7 +142,6 @@ window.addEventListener('DOMContentLoaded', async function () {
             room.once('open', () => {
                 messages.innerHTML += "入室しました<br class='space'>";
             });
-
 
             room.on('peerJoin', peerId => {
                 const intruder = Number(`${peerId}`);
@@ -167,7 +164,6 @@ window.addEventListener('DOMContentLoaded', async function () {
                     teacherIn(stream);
                 }
             });
-
 
             //メッセージの受信
             room.on('data', ({
@@ -297,6 +293,7 @@ window.addEventListener('DOMContentLoaded', async function () {
                     .catch(console.error);
 
                 function goshare(mediaStream) {
+
                     //通話音と画面共有の取得
                     const displayVideoTrack = mediaStream.getVideoTracks()[0];
                     const userAudioTrack = localStream.getAudioTracks()[0];
@@ -318,7 +315,6 @@ window.addEventListener('DOMContentLoaded', async function () {
                         localVideo.playsInline = true;
                         localVideo.height = '100%';
                         localVideo.play().catch(console.error);
-
                     }
                 }
 
@@ -489,9 +485,6 @@ window.addEventListener('DOMContentLoaded', async function () {
             }));
             return peer;
         }
-
-
-
     })();
 
 });
