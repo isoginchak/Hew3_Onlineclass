@@ -8,10 +8,8 @@ class LogsRestData extends Model
     protected $table = 'logs';
     protected $fillable = [
         //テーブルのカラム
-        'user_id','class_id', 'in_date','out_date','noface_time'
+        'user_id','class_id', 'entry_exit','noface_time'
     ];
 
-    protected $dates = [
-        'in_date','out_date'
-    ];
+ 
 }

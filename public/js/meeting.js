@@ -143,11 +143,11 @@ window.addEventListener('DOMContentLoaded', async function () {
                 messages.innerHTML += "入室しました<br class='space'>";
                 if (sessionPositon == 0) {
                     //Ajax
-                    const joinData = { user_id: sessionId, class_id: meetingId};
+                    const joinData = { user_id: sessionId, class_id: meetingId, entry_exit: 0 };
                     // JSON 形式への変換
                     let joinDataJSON = JSON.stringify(joinData);
                     postJoinLog(joinDataJSON);
-                   
+
                 }
             });
 
@@ -243,6 +243,11 @@ window.addEventListener('DOMContentLoaded', async function () {
                 sendTrigger.removeEventListener('click', onClickSend);
                 messages.innerHTML += '== You left ===\n';
                 shareButton.style.display = 'none';
+                //Ajax
+                const leaveData = { user_id: sessionId, class_id: meetingId, entry_exit: 1 };
+                // JSON 形式への変換
+                let joinDataJSON = JSON.stringify(leaveData);
+                postJoinLog(joinDataJSON);
                 Array.from(remoteVideos.children).forEach(remoteVideo => {
                     remoteVideo.srcObject.getTracks().forEach(track => track.stop());
                     remoteVideo.srcObject = null;
