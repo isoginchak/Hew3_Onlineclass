@@ -26,4 +26,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('rest', 'RestMeetingController');
     Route::resource('postnews', 'RestNewsController');
     Route::resource('postjoinlog', 'RestJoinLogController');
+    Route::resource('postleavelog', 'RestLeaveLogController');
 });

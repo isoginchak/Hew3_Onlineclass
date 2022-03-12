@@ -82,6 +82,19 @@ async function postJoinLog(joinDataJSON) {
 }
 
 
+async function postLeaveLog(leaveDataJSON) {
+    try {
+        const res = await axios.post(`/postleavelog`,leaveDataJSON, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log(res)
+
+    } catch (e) {
+        // console.log(e)
+    }
+}
 
 
 

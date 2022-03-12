@@ -14,6 +14,8 @@ let faces = null;
 let classifier = null;
 let videoMute = 1;
 let seconds;
+let totalNoFaceSeconds = 0;
+let maxNoFaceSeconds = 0;
 let startTime = new Date();
 let endTime = new Date();
 const videoButton = document.getElementById('video-btn');
@@ -91,7 +93,7 @@ function Video_Click() {
         onStart();
 
     } else { //ビデオを消す
-        stream .getVideoTracks().forEach((track) => (track.enabled = false));
+        stream.getVideoTracks().forEach((track) => (track.enabled = false));
         videoElem.srcObject = null;
         isStreaming = false;
         videoMute = 0;
@@ -153,11 +155,13 @@ function start() {
     const secondsNum = totalSeconds % 60;
     const secondsn = secondsNum ? secondsNum + '秒' : '0秒';
     if (totalSeconds >= alert) {
+        //時間表示
         document.getElementById('face').innerHTML = 'face_retouching_off';
         document.getElementById('face').style.color = '#c85000';
         secondsShow.innerHTML = hour + minutes + secondsn;
     }
-    if (secondsNum == alertTime) {
+    if (totalSeconds == alertTime) {
+        //アラート表示
         swal.fire({
             title: alertTime + '秒間、顔が認識されていません',
             icon: 'error',
@@ -166,6 +170,9 @@ function start() {
             showConfirmButton: false,
             timer: 3000           //3秒経過後に閉じる
         });
+    }
+    if (totalSeconds > maxNoFaceSeconds) {
+        maxNoFaceSeconds = totalSeconds;
     }
 
 }
