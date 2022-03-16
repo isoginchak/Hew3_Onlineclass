@@ -16,8 +16,8 @@ let videoMute = 1;
 let seconds;
 let totalNoFaceSeconds = 0;
 let maxNoFaceSeconds = 0;
+let tmpSeconds = 0;
 let startTime = new Date();
-let endTime = new Date();
 const videoButton = document.getElementById('video-btn');
 const secondsShow = document.getElementById('seconds');
 
@@ -124,6 +124,7 @@ function processVideo() {
     cv.cvtColor(matDst, matGrey, cv.COLOR_RGBA2GRAY, 0); // Get Grey Image
     classifier.detectMultiScale(matGrey, faces, 1.1, 3, 0); // Detect Faces
 
+
     if (faces.size() == 1) {
         //顔が検出された
         document.getElementById('face').innerHTML = 'face';
@@ -147,6 +148,7 @@ function processVideo() {
 function start() {
     let alert = 1;
     let totalSeconds = Math.floor((stopTime - startTime) / 1000);
+
     const alertTime = 5;
     const hourNum = Math.floor(totalSeconds / 3600);
     const hour = hourNum ? hourNum + '時間' : '';
@@ -154,6 +156,7 @@ function start() {
     const minutes = minutesNum ? minutesNum + '分' : '';
     const secondsNum = totalSeconds % 60;
     const secondsn = secondsNum ? secondsNum + '秒' : '0秒';
+
     if (totalSeconds >= alert) {
         //時間表示
         document.getElementById('face').innerHTML = 'face_retouching_off';
@@ -174,6 +177,11 @@ function start() {
     if (totalSeconds > maxNoFaceSeconds) {
         maxNoFaceSeconds = totalSeconds;
     }
+    if (totalSeconds != tmpSeconds && totalSeconds != 0) {
+        totalNoFaceSeconds++;
+        tmpSeconds = totalSeconds;
+    }
+
 
 }
 
