@@ -247,7 +247,7 @@ td a:hover {
 
 }
 
-.questions-wrap, .newses-wrap {
+.questions-wrap, .newses-wrap ,.logs-wrap{
     z-index: 2;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     width: 80vw;
@@ -257,7 +257,7 @@ td a:hover {
     padding-top: 20px;
 }
 
-.question-wrap, .news-wrap {
+.question-wrap, .news-wrap ,.logs-wrap{
     width: 78vw;
     margin: 10px auto 0 auto;
 }

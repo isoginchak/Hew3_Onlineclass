@@ -17,7 +17,6 @@ class CreateLogsTable extends Migration
             $table->increments('id')->unique();
             $table->integer('class_id');
             $table->integer('user_id');
-            $table->integer('entry_exit');
             $table->integer('total_noface_time')->nullable();
             $table->integer('max_noface_time')->nullable();
             $table->timestamps();

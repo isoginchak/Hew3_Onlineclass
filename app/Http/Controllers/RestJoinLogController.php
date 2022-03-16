@@ -39,7 +39,6 @@ class RestJoinLogController extends Controller
         $logs->user_id = $request->user_id;
         $class_id = DB::table('classes')->where('hash',$request->class_id)->select('id')->get();
         $logs->class_id = $class_id[0]->id;
-        $logs->entry_exit = $request->entry_exit;
    
         $logs->save();
     

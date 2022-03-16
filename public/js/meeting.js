@@ -244,9 +244,11 @@ window.addEventListener('DOMContentLoaded', async function () {
                 messages.innerHTML += '== You left ===\n';
                 shareButton.style.display = 'none';
                 //Ajax
-                const leaveData = { user_id: sessionId, class_id: meetingId, entry_exit: 1 ,total_noface_time: totalNoFaceSeconds , max_noface_time : maxNoFaceSeconds};
+                const leaveData = { user_id: sessionId, class_id: meetingId, total_noface_time: totalNoFaceSeconds, max_noface_time: maxNoFaceSeconds};
+               
                 // JSON 形式への変換
                 let leaveDataJSON = JSON.stringify(leaveData);
+
                 postLeaveLog(leaveDataJSON);
                 Array.from(remoteVideos.children).forEach(remoteVideo => {
                     remoteVideo.srcObject.getTracks().forEach(track => track.stop());

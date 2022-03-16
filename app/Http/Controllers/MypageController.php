@@ -39,11 +39,10 @@ class MypageController extends Controller
             ->join('participation', 'users.id', '=', 'participation.user_id')
             ->join('classes', 'participation.class_id', '=', 'classes.id')
             ->where('participation.user_id', $id)
-            ->select('classes.class_name as class_name','classes.id as class_id')
+            ->select('classes.class_name as class_name', 'classes.id as class_id')
             ->get();
-    
-        return view('mypage.mypage-news', ['newses' => $newses],['news_classes' => $news_classes]);
 
+        return view('mypage.mypage-news', ['newses' => $newses], ['news_classes' => $news_classes]);
     }
 
     public function question()
@@ -64,7 +63,21 @@ class MypageController extends Controller
     }
     public function log()
     {
-        return view('mypage.mypage-log');
+        $user = Auth::user();
+        $id =   Auth::id();
+        $schoolid = Auth::user()->schoolid;
+
+        $logs = DB::table('logs')
+            ->join('offer', 'logs.class_id', '=', 'offer.class_id')
+            ->leftjoin('users', 'logs.user_id', '=', 'users.id')
+            ->leftjoin('classes', 'logs.class_id', '=', 'classes.id')
+            ->where('offer.class_id',  $schoolid)
+            ->select('logs.id as logs_id', 'classes.class_name', 'users.family_name', 'users.first_name', 'total_noface_time', 'max_noface_time', 'logs.created_at as enter_time', 'logs.updated_at as leave_time')
+            ->latest('logs.updated_at')
+            ->get();
+
+
+        return view('mypage.mypage-log',['logs' => $logs]);
     }
     public function setup()
     {

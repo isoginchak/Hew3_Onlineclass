@@ -36,14 +36,13 @@ class RestLeaveLogController extends Controller
     public function store(Request $request)
     {
         $logs = new LogsRestData;
-        $logs->user_id = $request->user_id;
         $class_id = DB::table('classes')->where('hash',$request->class_id)->select('id')->get();
-        $logs->class_id = $class_id[0]->id;
-        $logs->entry_exit = $request->entry_exit;
-        $logs->total_noface_time = $request->total_noface_time;
-        $logs->max_noface_time = $request->max_noface_time;
-   
-        $logs->save();
+        logger( $class_id[0]->id);
+
+        $change_table= $logs::where('user_id', $request->user_id)
+                        ->where('class_id', $class_id[0]->id)
+                        ->latest()->first()
+                        ->fill(['total_noface_time' => $request->total_noface_time,'max_noface_time' => $request->max_noface_time])->save();
     }
 
     /**
