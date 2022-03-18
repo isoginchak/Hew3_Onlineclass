@@ -71,7 +71,7 @@ class MypageController extends Controller
             ->join('offer', 'logs.class_id', '=', 'offer.class_id')
             ->leftjoin('users', 'logs.user_id', '=', 'users.id')
             ->leftjoin('classes', 'logs.class_id', '=', 'classes.id')
-            ->where('offer.class_id',  $schoolid)
+            ->where('offer.school_id',  $schoolid)
             ->select('logs.id as logs_id', 'classes.class_name','classes.id as class_id',  'users.id as users_id','users.family_name', 'users.first_name', 'total_noface_time', 'max_noface_time', 'logs.created_at as enter_time', 'logs.updated_at as leave_time')
             ->latest('logs.updated_at')
             ->get();

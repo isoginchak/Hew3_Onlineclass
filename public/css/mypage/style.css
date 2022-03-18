@@ -498,3 +498,8 @@ td a:hover {
 .logs-table{
     width: 90%;
 }
+
+.logs-table th{
+    height: 60px;
+    background: #FBFBFB;
+}

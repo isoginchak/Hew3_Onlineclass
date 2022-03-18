@@ -22,6 +22,15 @@ function s2h($seconds)
 
     return $hms;
 }
+
+function  timeDifference($enter_time, $leave_time)
+{
+    //タイムスタンプの差を計算
+    $difSeconds = strtotime($leave_time) - strtotime($enter_time);
+    $str_time = s2h($difSeconds);
+    return  $str_time;
+}
+
 ?>
 
 <div class="logs-wrap">
@@ -30,13 +39,14 @@ function s2h($seconds)
         <th>氏名</th>
         <th>入室時間</th>
         <th>退出時間</th>
+        <th>滞在時間</th>
         <th>合計顔不検出時間</th>
         <th>最大顔不検出時間</th>
 
 
         @foreach ( $logs as $log)
         @if( $log ->enter_time!=$log ->leave_time)
-        <tr>    
+        <tr>
             <td>
                 {{ $log -> class_name  }}
             </td>
@@ -51,10 +61,17 @@ function s2h($seconds)
             </td>
             <td>
                 <?php
+                $difference_time =  timeDifference($log->enter_time, $log->leave_time);
+                ?>
+                {{ $difference_time}}
+            </td>
+            <td>
+                <?php
                 $total_time =  s2h($log->total_noface_time);
                 ?>
                 {{ $total_time }}
             </td>
+
             <td>
                 <?php
                 $max_time =  s2h($log->max_noface_time);
@@ -64,9 +81,6 @@ function s2h($seconds)
 
         </tr>
         @endif
-
-
-
         @endforeach
     </table>
 
