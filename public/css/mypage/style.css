@@ -494,3 +494,7 @@ td a:hover {
 .news-date {
     padding-right: 30px;
 }
+
+.logs-table{
+    width: 90%;
+}
